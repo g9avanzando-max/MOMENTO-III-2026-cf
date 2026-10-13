@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Estadísticas de uso · Momento III</title><meta name="robots" content="noindex">
+<style>
+body{margin:0;font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;background:#faf6f1;color:#2b2220}
+header{background:#ae3836;color:#fff;padding:20px 16px;text-align:center}header h1{margin:0;font-size:1.3rem}
+main{max-width:900px;margin:0 auto;padding:16px}
+.card{background:#fff;border:1px solid #e6d9d0;border-radius:12px;padding:14px 16px;margin:10px 0}
+.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}.k{font-size:2rem;font-weight:700;color:#ae3836}
+input{padding:10px;border:2px solid #e6d9d0;border-radius:10px;font:inherit;width:min(100%,320px)}button{padding:10px 18px;border:0;border-radius:10px;background:#ae3836;color:#fff;font:inherit;font-weight:700;cursor:pointer}
+.bars{display:flex;align-items:flex-end;gap:3px;height:150px;overflow-x:auto;padding-bottom:4px}.b{flex:1;min-width:14px;background:#ae3836;border-radius:3px 3px 0 0;position:relative}
+.b span{position:absolute;top:-16px;left:0;right:0;text-align:center;font-size:.6rem;color:#6b5d58}
+table{border-collapse:collapse;width:100%}th,td{border:1px solid #e6d9d0;padding:6px 8px;font-size:.9rem;text-align:center}th{background:#ae3836;color:#fff}td:first-child{text-align:left}
+.e{color:#8a1c1c}.q{color:#6b5d58;font-size:.88rem}
+</style></head><body>
+<header><h1>Estadísticas de uso · Guía Integral Momento III</h1></header>
+<main>
+<div class="card"><b>Clave de consulta</b><p class="q">Es la clave que usted definió en Netlify (variable STATS_KEY). No se guarda en el navegador.</p>
+<input id="k" type="password" placeholder="Clave" autocomplete="off"> <button onclick="go()">Ver estadísticas</button><p id="m" class="e"></p></div>
+<div id="r"></div>
+</main>
+<script>
+const $=i=>document.getElementById(i);
+async function go(){const m=$("m");m.textContent="";$("r").innerHTML="";
+try{const r=await fetch("/api/visitas?key="+encodeURIComponent($("k").value),{cache:"no-store"});
+if(r.status==401){m.textContent="Clave incorrecta o variable STATS_KEY sin configurar.";return}
+if(!r.ok)throw 0;const d=await r.json(),t=d.total||{},ds=Object.keys(d.dias||{}).sort(),ult=ds.slice(-30),mx=Math.max(1,...ult.map(k=>d.dias[k].visita||0));
+const K=[["Visitas",t.visita||0,"Veces que se abrió la aplicación (una por sesión de navegador)"],["Ingresos",t.ingreso||0,"Veces que un docente pulsó ENTRAR con sus datos"],["Docentes nuevos",t.docente||0,"Trabajos creados por primera vez (aprox.)"],["PDF exportados",t.pdf||0,"Informes y cronogramas descargados"]];
+$("r").innerHTML=`<div class="g">${K.map(c=>`<div class="card"><div class="k">${c[1]}</div><b>${c[0]}</b><div class="q">${c[2]}</div></div>`).join("")}</div>
+<div class="card"><b>Visitas por día (últimos ${ult.length} días con registro)</b><div class="bars">${ult.map(k=>`<div class="b" title="${k}: ${d.dias[k].visita||0}" style="height:${Math.max(3,(d.dias[k].visita||0)/mx*100)}%"><span>${d.dias[k].visita||0}</span></div>`).join("")||"<p class='q'>Aún sin datos.</p>"}</div></div>
+<div class="card"><b>Detalle por día</b><div style="overflow-x:auto"><table><tr><th>Fecha</th><th>Visitas</th><th>Ingresos</th><th>Docentes nuevos</th><th>PDF</th></tr>${ds.slice().reverse().map(k=>{const x=d.dias[k];return `<tr><td>${k}</td><td>${x.visita||0}</td><td>${x.ingreso||0}</td><td>${x.docente||0}</td><td>${x.pdf||0}</td></tr>`}).join("")}</table></div></div>
+<p class="q">Contador anónimo: no guarda nombres, instituciones, códigos ni PIN. Las cifras son aproximadas.</p>`}
+catch(e){m.textContent="No fue posible consultar las estadísticas."}}
+</script></body></html>

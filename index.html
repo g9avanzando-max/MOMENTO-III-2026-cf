@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Momento III · PTAFI 3.0 · Instrumento interactivo</title>
+<style>
+:root{--bg:#faf6f1;--card:#fff;--tx:#2b2220;--mu:#6b5d58;--ac:#ae3836;--ac2:#f5c431;--bd:#e6d9d0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d1716;--card:#2a2120;--tx:#f3ebe7;--mu:#b9aaa4;--ac:#e8665f;--bd:#443735}}
+:root[data-theme="dark"]{--bg:#1d1716;--card:#2a2120;--tx:#f3ebe7;--mu:#b9aaa4;--ac:#e8665f;--bd:#443735}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+header{background:#ae3836;color:#fff;padding:22px 16px;text-align:center}
+header h1{margin:0;font-size:1.5rem}header p{margin:6px 0 0;opacity:.9}
+header b{color:#f5c431}
+main{max-width:900px;margin:0 auto;padding:16px}
+h2{color:var(--ac);margin:.2em 0}.intro{color:var(--mu);margin-top:0}
+details{background:var(--card);border:1px solid var(--bd);border-radius:10px;margin:10px 0;padding:0 14px}
+summary{cursor:pointer;padding:12px 0;font-weight:600}
+details[open] summary{border-bottom:1px solid var(--bd);margin-bottom:8px}
+details p,details ul{margin:6px 0 12px}
+.ex{background:rgba(245,196,49,.18);border-left:4px solid var(--ac2);padding:8px 12px;border-radius:6px;margin:8px 0 12px}
+.q{color:var(--mu);font-size:.92rem}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+button.b{background:var(--ac);color:#fff;border:0;border-radius:8px;padding:8px 14px;cursor:pointer;font-size:.9rem}
+button.b.g{background:var(--bg);color:var(--tx);border:1px solid var(--bd)}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;margin:10px 0}
+input,select,textarea{width:100%;padding:6px 8px;border:1px solid var(--bd);border-radius:6px;background:var(--card);color:var(--tx);font:inherit;font-size:.9rem}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;min-width:760px}
+th,td{border:1px solid var(--bd);padding:4px;font-size:.85rem;vertical-align:top}th{background:var(--ac);color:#fff}
+.pv{display:none}
+footer{text-align:center;padding:24px 16px;color:var(--mu);border-top:1px solid var(--bd);margin-top:24px}
+footer b{color:var(--ac)}
+@media print{nav,.tools,header p,.noprint,button{display:none!important}body{background:#fff;color:#000}
+body.pc section.sec:not(#cron){display:none}.pv{display:block}.ed{display:none}
+th{background:#ae3836!important;color:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}table{min-width:0}}
+
+.lay{display:grid;grid-template-columns:270px minmax(0,1fr);max-width:1200px;margin:0 auto;align-items:start}
+nav{position:sticky;top:0;height:100vh;overflow-y:auto;background:#7d2523;padding:14px 10px;display:flex;flex-direction:column;gap:3px}
+nav button{text-align:left;background:transparent;color:#f7e9e6;border:0;border-radius:8px;padding:9px 10px;cursor:pointer;font-size:.9rem;display:flex;gap:10px;align-items:center;font-family:inherit}
+nav button:hover{background:rgba(255,255,255,.12)}
+nav .n{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.18);display:inline-flex;align-items:center;justify-content:center;font-size:.75rem;flex:none}
+nav button.on{background:#f5c431;color:#3b1210;font-weight:700}nav button.on .n{background:#3b1210;color:#f5c431}
+.mt{display:none;width:100%;border:0;background:#7d2523;color:#fff;padding:12px;font-size:1rem;position:sticky;top:0;z-index:6}
+main{padding:24px 28px}h2{font-size:1.6rem;border-bottom:3px solid var(--ac2);padding-bottom:8px}
+details{border-left:4px solid var(--ac);box-shadow:0 1px 3px rgba(0,0,0,.06)}summary{font-size:1.02rem}
+.ex{font-size:.95rem}
+@media(max-width:800px){.lay{grid-template-columns:1fr}nav{position:static;height:auto;display:none}nav.open{display:flex}.mt{display:block}main{padding:16px}}
+@media print{.mt{display:none!important}}
+
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px 16px;margin:10px 0}
+.date{font-size:1.4rem;font-weight:700;color:var(--ac)}.bar{height:12px;background:var(--bd);border-radius:8px;overflow:hidden;margin:10px 0}.bar i{display:block;height:100%;background:var(--ac)}
+.mons{display:flex;justify-content:space-between;color:var(--mu);font-size:.85rem}
+.zg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.pool{display:flex;flex-wrap:wrap;gap:6px;min-height:46px;padding:8px;border:1px dashed var(--bd);border-radius:10px;margin-bottom:10px}
+.zone{min-height:90px;padding:8px;border:2px dashed var(--bd);border-radius:10px;background:var(--card)}.zone b{display:block;margin-bottom:6px;color:var(--ac)}
+.chip{display:inline-block;background:var(--bg);border:1px solid var(--bd);border-radius:16px;padding:5px 10px;margin:2px;font-size:.85rem;cursor:grab;user-select:none}
+.chip.sel{outline:3px solid var(--ac2)}.chip.ok{background:#cfeedd;color:#103a22;border-color:#2e9d5b}.chip.no{background:#fbd5d2;color:#4a1411;border-color:#d0443d}
+.fl{cursor:pointer;margin:0}.bk{margin-top:8px;font-size:.92rem}.obj{background:rgba(245,196,49,.18);padding:8px 12px;border-radius:8px}
+.prow{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center;padding:8px 0;border-bottom:1px solid var(--bd)}
+#ft button.on{background:var(--ac);color:#fff}.res{font-weight:600}
+@media print{.card{break-inside:avoid}}
+.lg{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.82rem;margin:2px}
+.cm b{display:block;margin-bottom:4px}.cg{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;font-size:.8rem}
+.cg i{font-style:normal;padding:4px 0;border-radius:6px}.cg .dn{color:var(--mu);font-weight:700}
+.st{background:#1b7a6b;color:#fff;font-weight:700}.en{background:#ae3836;color:#fff;font-weight:700}.rg{background:rgba(245,196,49,.4)}
+
+.pg{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0 14px}.pg span{flex:1;min-width:92px;text-align:center;font-size:.72rem;font-weight:700;padding:6px 4px;border-radius:6px;background:var(--bd);color:var(--mu)}.pg .d{background:#2e9d5b;color:#fff}.pg .c{background:var(--ac);color:#fff}
+.scr{animation:fi .4s ease}@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.hero{background:linear-gradient(135deg,#7d2523,#ae3836);color:#fff;border-radius:14px;padding:22px;margin:10px 0}.hero.small{padding:14px}.hero h2{color:#fff}
+.op{display:block;width:100%;text-align:left;margin:6px 0;padding:11px 14px;border:2px solid var(--bd);border-radius:10px;background:var(--card);color:var(--tx);font:inherit;cursor:pointer}.zg .op{margin:0}.op.sel{border-color:var(--ac);background:rgba(174,56,54,.1)}.op.good{border-color:#2e9d5b;background:#cfeedd;color:#103a22}.op.bad{border-color:#d0443d;background:#fbd5d2;color:#4a1411}
+.bad2{border-left-color:#d0443d;background:#fbd5d2;color:#4a1411}.fl2{display:block;font-weight:600;margin:12px 0 4px}
+.nv{display:flex;justify-content:space-between;margin:18px 0}button.b:disabled{opacity:.5;cursor:not-allowed}
+.flow{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:1.3rem;margin:12px 0}.flow span{background:var(--ac);color:#fff;border-radius:50px;padding:16px 28px;font-weight:700;font-size:1rem}
+.flow2{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;margin:14px 0}.flow2 span{background:rgba(255,255,255,.18);padding:8px 12px;border-radius:20px;font-size:.85rem}
+.fin .ic{font-size:3rem;animation:pop 1.2s ease-in-out infinite alternate}@keyframes pop{to{transform:scale(1.25) rotate(8deg)}}
+
+.tg{display:inline-block;font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:10px;background:var(--ac);color:#fff;vertical-align:middle}
+.chk{display:block;margin:8px 0;font-size:.9rem}.chk input{width:auto}
+.evc{background:rgba(245,196,49,.25);border-left:5px solid var(--ac2);padding:10px 14px;border-radius:8px;font-weight:700;font-size:.85rem;margin-bottom:12px}
+.circ{border:3px solid var(--ac);background:var(--card);color:var(--tx);border-radius:18px;padding:16px;cursor:pointer;font:inherit;text-align:center}.circ span{display:block;font-size:.82rem;margin-top:6px}.circ.sel{background:var(--ac);color:#fff}
+.pre{white-space:pre-wrap;font:inherit;font-size:.88rem;margin:0}.tlw .card{border-left:4px solid var(--ac2)}
+
+#wl{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(160deg,#0b2447,#19376d 55%,#576cbc);box-sizing:border-box}
+.wc{background:#fff;color:#10243f;border-radius:24px;padding:28px 26px;max-width:560px;width:100%;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.wc h1{margin:4px 0 0;color:#0b2447;font-size:1.7rem;text-align:center}.wc h2{margin:2px 0 8px;color:#19376d;font-size:1.1rem;text-align:center}.wi{font-size:2.6rem;text-align:center}
+.ws{text-align:center;color:#576cbc;font-weight:600;font-size:.9rem}.wc label{display:block;font-weight:600;margin:12px 0 4px;color:#19376d}
+.wc input,.wc select{width:100%;padding:12px 14px;border:2px solid #c9d8f0;border-radius:12px;font-size:1rem;background:#f4f8ff;color:#10243f}.wc input:focus,.wc select:focus{outline:none;border-color:#576cbc}
+.wb{width:100%;margin-top:18px;padding:15px;border:0;border-radius:14px;background:#19376d;color:#fff;font-size:1.1rem;font-weight:700;cursor:pointer}.wb:hover{background:#0b2447}
+.werr{background:#fde8e8;color:#8a1c1c;border-radius:10px;padding:10px 12px;margin:12px 0 0;font-size:.9rem}.wf{font-size:.75rem;color:#6b7c95;text-align:center;margin:10px 0 0}
+.idb{background:#e8f1fb;color:#10315c;padding:8px 14px;font-size:.85rem;display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;justify-content:center}.idb .b{padding:4px 10px;font-size:.78rem}
+.phb{background:#e8f1fb;color:#10315c;border-radius:10px;padding:8px 12px;font-size:.88rem;margin:8px 0}
+#fT[readonly],#fE[readonly],#fD[readonly],#fDp[readonly],#fMn[readonly]{opacity:.8}
+[hidden]{display:none!important}
+@media print{#wl,.idb{display:none!important}}
+.wb2{width:100%;margin-top:10px;padding:11px;border:2px solid #19376d;border-radius:12px;background:#fff;color:#19376d;font-weight:700;cursor:pointer;font-size:.95rem}
+.ng{color:#f5c431;font-weight:700;font-size:.78rem;letter-spacing:.05em;padding:14px 10px 4px;border-top:1px solid rgba(255,255,255,.18);margin-top:6px}.ng:first-child{border-top:0;margin-top:0}nav button{padding-left:18px}
+nav button.ng{width:100%;justify-content:flex-start;font-weight:700;font-size:.82rem;letter-spacing:.04em;color:#f5c431;background:rgba(255,255,255,.08);border:0;margin:8px 0 2px;padding:10px 12px}.gsub{display:flex;flex-direction:column;gap:3px;padding-left:6px}
+nav button.ng{justify-content:center;text-align:center}
+.bv{text-align:center;color:#fff;padding:6px 8px 10px;font-size:.9rem;border-bottom:1px solid rgba(255,255,255,.18);margin-bottom:6px}.bv b{display:block;color:#f5c431;font-size:1rem}.vis{margin-top:14px;padding:10px 6px;border-top:1px solid rgba(255,255,255,.18);text-align:center;color:#f7e9e6;font-size:.88rem}.vis small{display:block;opacity:.85;margin-top:3px}
+</style></head><body>
+<div id="wl"><div class="wc"><div class="wi">🎓</div><h1>MOMENTO III · 2026</h1><h2>Evaluación, sistematización y proyección</h2><p class="ws">Programa de Tutorías para el Aprendizaje y la Formación Integral · PTAFI 3.0</p><p>Bienvenido(a). Para ingresar, registre los datos de identificación del docente tutor y de la institución educativa.</p>
+<label>👩‍🏫 Nombre del tutor o tutores</label><input id="wt" placeholder="Nombre completo" autocomplete="off">
+<label>🏫 Nombre de la institución educativa</label><input id="we2" placeholder="Institución educativa" autocomplete="off">
+<label>🔢 Código DANE</label><input id="wc" inputmode="numeric" maxlength="12" placeholder="Solo números (se conservan los ceros iniciales)" autocomplete="off">
+<label>🔐 PIN personal (no lo olvide)</label><input id="wpin" type="password" maxlength="40" placeholder="Mínimo 6 caracteres; use uno que solo usted conozca" autocomplete="off"><label>📍 Departamento</label><select id="wd" onchange="wdep()"></select>
+<label>🏘️ Municipio</label><select id="wn" onchange="wmun()"><option value="">Primero elija el departamento</option></select><input id="wo" hidden placeholder="Escriba el municipio">
+<p id="wrec" class="werr" hidden style="background:#e6f6ea;color:#14532d"></p><p id="wer" class="werr" hidden></p><button class="wb" onclick="enter()">ENTRAR</button><button class="wb2" onclick="salir()">🧹 Limpiar campos</button><button class="wb2" onclick="recov()">🔄 Recuperar mi trabajo (solo DANE + PIN)</button><p class="wf">Pantalla de identificación, no es un inicio de sesión con contraseña.</p><p class="wf">¿Ya trabajó antes, incluso desde otro equipo? Escriba su DANE y su PIN y pulse «Recuperar mi trabajo». Su avance se guarda cifrado: nadie más puede leerlo.</p><p class="wf"><b>Tutor Leonardo Orozco · Atlántico</b></p><p class="wf">Versión Cloudflare del 12/10/2026</p></div></div>
+<div id="app" hidden>
+<header><h1>Guía Integral <b>Momento III</b> · PTAFI 3.0</h1>
+<p>Evaluación, sistematización y proyección</p></header>
+<div id="idb" class="idb"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<button class="mt" onclick="document.getElementById('nav').classList.toggle('open')">☰ Menú de contenidos</button><div class="lay"><nav id="nav"></nav><main id="main"></main></div>
+<footer>Instrumento elaborado a partir de la Guía Integral Momento III (MEN, 2026).<br>
+Crédito: <b>Leonardo Orozco</b> · Docente tutor del Atlántico</footer>
+</div>
+<script>
+const S=[
+{id:"ruta",n:"Ruta y fases",t:"Desarrollo de la ruta",i:"La ruta es la misma para todos, pero cada comunidad educativa traza su camino según su nivel de apropiación y su historia del año. Abre cada fase.",
+I:[
+{h:"1. Apropiar: comprender para transformar",p:"Construir un marco común entre formadores, tutores, practicantes, directivos, docentes, estudiantes, familias y Secretarías sobre los Lineamientos Curriculares, las nueve dimensiones y las nociones de capacidades, aprendizajes y competencias.",e:"Taller de 2 horas con docentes: cada área ubica en las nueve dimensiones una experiencia de 2026 y reconoce una capacidad, un aprendizaje y una competencia que observó.",q:"¿Qué avances y desafíos identificamos en 2026?"},
+{h:"2. Evaluar: lectura colectiva del año",p:"Valorar lo que realmente ocurrió, más allá de contar estrategias o productos: qué capacidades se habilitaron, qué aprendizajes emergieron y qué competencias se movilizaron en situaciones reales.",e:"Círculo de conversación con estudiantes de grado 8° ('¿qué pueden hacer ahora que antes no?'), encuentro con familias y taller con docentes. También sesiones con directivos y comunidades de aprendizaje de tutores.",q:"¿Qué cambió en estudiantes, prácticas docentes y relación con las familias?"},
+{h:"3. Sistematizar: de la experiencia al conocimiento compartible",p:"Organizar, analizar e interpretar la información para identificar hallazgos, prácticas significativas y aspectos por fortalecer; comunicarlos con tableros, gráficos, narrativas, boletines y una muestra integradora de cierre.",e:"Docentes escriben en equipo una narrativa pedagógica (contexto, experiencia, tensiones, aprendizajes, proyecciones) y se publica un boletín. La muestra puede ser un festival de saberes, foro estudiantil o exposición comunitaria.",q:"¿Qué condiciones favorecieron o dificultaron el proceso?"},
+{h:"4. Proyectar: visión compartida hacia 2027",p:"Definir los cambios que necesita el EE: anclar la articulación en plan de estudios, SIEE, convivencia y PEI; proyectar alianzas; usar pedagógicamente los resultados de evaluaciones en las semanas de desarrollo institucional (dic–ene).",e:"Mesa por ciclos que decide qué estrategias continúan, cuáles se transforman y cuáles se cierran, y cómo quedan en la asignación académica y la malla curricular.",q:"¿Qué procesos, condiciones institucionales y prácticas observables queremos transformar?"}]},
+{id:"roles",n:"Roles",t:"Roles en el Momento III: ¿quién hace qué?",i:"Cada actor tiene responsabilidades claras, sin duplicar esfuerzos ni generar vacíos.",
+I:[
+{h:"Coordinador/a de zona",p:"Articula la mirada territorial: analiza avances de las microrregiones, identifica aprendizajes y desafíos comunes, facilita que las experiencias circulen, conecta el PTAFI 3.0 con las agendas de las ETC y orienta la sostenibilidad en 2027."},
+{h:"Formador/a PTAFI 3.0",p:"Facilita los encuentros de cierre microrregionales, acompaña las narrativas de práctica reflexiva de los tutores, consolida el banco de experiencias, socializa avances ante las ETC y acompaña a rectores y equipos directivos en la articulación curricular."},
+{h:"Docente tutor/a",p:"Articulador central en cada EE: facilita la participación de los actores, orienta el análisis de evidencias desde los Lineamientos, promueve la reflexión sobre las prácticas, organiza o co-organiza las muestras y acompaña los acuerdos para 2027."},
+{h:"Docentes y facilitadores/as de EFI",p:"Co-constructores del cierre: analizan transformaciones en sus prácticas, reconocen capacidades y aprendizajes de los estudiantes, participan en la sistematización y proyectan ajustes y articulaciones curriculares."},
+{h:"Directivos docentes",p:"Anclan la formación integral en el PEI, el SIEE y el plan de estudios, definen tiempos y espacios, fomentan el trabajo colaborativo por nivel, ciclo y grupo de grados, y lideran la declaración pública del nivel de apropiación alcanzado en 2026."},
+{h:"Practicantes del PTAFI",p:"Cierran con una sistematización reflexiva (incidencia en el EE, aprendizajes, lo que llevan a su labor docente) y son co-protagonistas de las muestras. Son el puente entre política educativa y academia."},
+{h:"Secretarías de Educación (ETC)",p:"Acompañan la lectura de avances, participan en la socialización, respaldan las transformaciones proyectadas, promueven condiciones para la permanencia de los procesos y fortalecen la formación integral en sus apuestas de calidad."}]},
+{id:"ver",n:"Qué se espera ver",t:"¿Qué se espera ver? Acciones concretas del tutor/a",i:"Acciones observables del docente tutor/a durante el Momento III.",
+I:[
+{h:"Facilita la evaluación participativa",p:"Organiza círculos con estudiantes, talleres con docentes y encuentros con familias. Usa capacidades, aprendizajes, competencias y las nueve dimensiones como lentes, sin convertirlos en formatos; diseña formas pertinentes al contexto, no instrumentos estandarizados."},
+{h:"Acompaña la sistematización",p:"Facilita la escritura colectiva de narrativas, actualiza los instrumentos de armonización con evidencias reales, alimenta el banco de experiencias y co-diseña tableros, gráficos, presentaciones y narrativas."},
+{h:"Organiza la muestra integradora",p:"Una celebración auténtica y a la vez evaluación real: estudiantes protagonistas, no espectadores. Invita a actores comunitarios, familias y otros EE de la microrregión."},
+{h:"Acompaña la proyección hacia 2027",p:"Facilita el análisis de evidencias y la toma de decisiones, la articulación curricular, la relación con familias y aliados y el uso pedagógico de resultados, sin sustituir el liderazgo ni la decisión del EE."},
+{h:"Construye su narrativa de práctica reflexiva",p:"Sistematiza qué aprendió, qué tensiones encontró, qué haría diferente y qué capacidades propias fortaleció. Aporta al banco de experiencias y a la formación de futuros tutores."}]},
+{id:"ejes",n:"Seis ejes",t:"Los seis ejes estratégicos en el Momento III",i:"No son aspiraciones por construir sino prácticas a evaluar, celebrar y proyectar.",
+I:[
+{h:"1. Armonización y articulación curricular",p:"Lo construido se ancla formalmente en el PEI, plan de estudios, planes de área y SIEE como acuerdos pedagógicos vivos, no solo matrices. Se evalúa la integración del diseño a la práctica y se proyectan proyectos integradores."},
+{h:"2. Liderazgo pedagógico y capacidades territoriales",p:"Los directivos toman decisiones de sostenibilidad: PEI, tiempos y espacios para 2027, EFI en la asignación académica y alianzas. Las ETC priorizan la formación integral en sus agendas."},
+{h:"3. Pensamiento y comunicación como campos transversales",p:"Las muestras son ejercicios de comunicación compleja: los estudiantes argumentan, narran, demuestran y defienden lo aprendido. Se evalúa cómo se conectaron las competencias comunicativas, matemáticas y científicas con el territorio."},
+{h:"4. Cuerpo, expresión, artes, culturas y deporte",p:"Las muestras celebran las dimensiones corporal, comunicativa y creativa y cultural; se proyecta llevarlas al currículo regular y al plan de estudios, más allá del tiempo de las EFI."},
+{h:"5. Talento humano y comunidades de aprendizaje",p:"Tutores y practicantes construyen narrativas reflexivas, se enriquece el banco de experiencias, se proyecta la formación situada 2027 y se consolidan comunidades de aprendizaje como estructuras permanentes."},
+{h:"6. Interculturalidad y educación propia",p:"Las muestras en comunidades indígenas, afrodescendientes, raizales, palenqueras, Rrom y campesinas se diseñan desde sus lógicas propias; la sistematización respeta sus formas de nombrar y construir memoria (Decreto 0481 de 2025, Circular 026 de 2026)."}]},
+{id:"cond",n:"Condiciones",t:"Condiciones para que el Momento III se consolide",i:"",
+I:[
+{h:"1. El tiempo de cierre es pedagógico, no administrativo",p:"Evitar convertir el cierre en informes y formatos. Los directivos protegen el tiempo para la evaluación participativa, las muestras y la proyección."},
+{h:"2. La voz de los estudiantes es el criterio central",p:"Si un estudiante explica con sus palabras qué aprendió, qué capacidades desarrolló y qué quiere seguir aprendiendo, la formación integral funciona. Una evaluación sin su voz está incompleta."},
+{h:"3. La articulación curricular debe evidenciarse",p:"Cada conexión entre EFI y áreas debe concretarse en al menos una acción verificable: una clase articulada, un proyecto integrado o una evaluación formativa compartida."},
+{h:"4. La celebración es parte del proceso formativo",p:"Celebrar no se opone a evaluar con rigor: las muestras declaran confianza en las capacidades de los estudiantes y motivan a seguir transformando."}]},
+{id:"ins",n:"Insumos",t:"Insumos pedagógicos del Momento III",i:"Herramientas vivas que alimentan el repositorio microrregional y el ciclo 2027, no documentos para cumplir.",
+I:[
+{h:"Sistematización del año (PFIEE)",p:"Construcción colectiva de logros, aprendizajes, tensiones y proyecciones 2027. Incluye obligatoriamente la voz de estudiantes, familias, docentes y directivos."},
+{h:"Narrativas pedagógicas de cierre",p:"Relatos con contexto, experiencia, análisis honesto de tensiones y aprendizajes, y proyecciones; incluyen desafíos y errores. Son el corazón de la memoria pedagógica."},
+{h:"Matrices de articulación actualizadas",p:"Versión enriquecida con evidencias reales y compromisos 2027; registros de práctica verificada que se formalizan en planes de área y SIEE."},
+{h:"Banco de experiencias microrregionales",p:"Repositorio de prácticas significativas construido por tutores y administrado por formadores; permite seguimiento y transferencia de saber situado."},
+{h:"Narrativa de práctica reflexiva del tutor/a",p:"Documento propio sobre aprendizajes, tensiones, transformaciones y proyecciones; insumo para su desarrollo profesional y la formación de nuevos tutores."},
+{h:"Sistematización de las y los practicantes",p:"Evidencia su proceso, su incidencia en el EE y sus aprendizajes; incluye narrativas significativas y caracterización actualizada del EE."}]},
+{id:"niv",n:"Niveles de apropiación",t:"Niveles de apropiación de la formación integral",i:"Proceso progresivo de mejoramiento continuo (Lineamientos, MEN 2026). Según la guía:",
+I:[
+{h:"1. Compromiso educativo",p:"Punto de partida: el EE reconoce la importancia de la formación integral, construye una visión compartida en el PEI e inicia pilotos y sensibilización. (Infografía: Reconocimiento)."},
+{h:"2. Autogestión",p:"De la declaración a la acción sistemática: la comunidad asume responsabilidades en planeación, ejecución y evaluación y la integralidad se refleja en currículo, proyectos y evaluaciones. (Infografía: Comprensión)."},
+{h:"3. Liderazgo distribuido",p:"La formación integral es eje transversal y compartido; directivos, docentes, estudiantes y familias lideran colaborativamente. (Infografía: Aplicación)."},
+{h:"4. Cultura escolar",p:"La formación integral hace parte de la identidad y la vida cotidiana; el EE es referente que acompaña a otros. (Infografía: Transformación)."}]},
+{id:"eva",n:"Evaluación",t:"La evaluación en el marco de la formación integral",i:"Proceso continuo, formativo y contextualizado. «Evaluar también es formar».",
+I:[
+{h:"Reconocer avances y oportunidades de mejora",p:"Mira lo que cambió, no solo lo que falta."},
+{h:"Valorar el desarrollo integral del estudiante",p:"Capacidades, aprendizajes y competencias, no solo notas."},
+{h:"Fortalecer la autorregulación y la reflexión",p:"El estudiante se pregunta qué aprendió y cómo."},
+{h:"Orientar la toma de decisiones para seguir aprendiendo",p:"Los resultados se usan pedagógicamente; en el SIEE se reconoce lo que el estudiante desarrolla en las EFI mediante evaluación formativa, sin la lógica de calificación numérica y promoción."}]},
+{id:"org",n:"Organización curricular",t:"Organización curricular",i:"Se estructura desde un enfoque flexible, integrado y contextualizado. «Un currículo con sentido, para la vida».",
+I:[
+{h:"Define propósitos de formación",p:"Qué ser humano y qué sociedad se quiere formar."},
+{h:"Articula áreas, proyectos y experiencias",p:"Evita la fragmentación curricular.",e:"Un proyecto de huerta que une ciencias naturales, matemáticas y ética."},
+{h:"Considera el contexto y la diversidad",p:"Parte del territorio y de las características de los estudiantes."},
+{h:"Favorece continuidad y progresión",p:"Los aprendizajes se profundizan de un grado a otro."}]},
+{id:"rel",n:"Ejes relacionales",t:"Los ejes relacionales",i:"Conectan y dan sentido a la formación integral, y se concretan en procesos a transformar, condiciones institucionales y prácticas observables.",
+I:[
+{h:"El estudiante consigo mismo",p:"Autoconocimiento, emociones, cuerpo y proyecto de vida."},
+{h:"El estudiante con los otros",p:"Convivencia, cooperación y ciudadanía."},
+{h:"El estudiante con su entorno",p:"Territorio, ambiente, cultura y comunidad."},
+{h:"El estudiante con el conocimiento",p:"Saberes, pensamiento crítico y creatividad."}]},
+{id:"suj",n:"Sujetos",t:"Sujetos de la formación integral y sus funciones",i:"Proceso compartido: «Todos aportamos a la formación integral».",
+I:[
+{h:"Estudiantes (protagonistas)",p:"Participan, expresan su voz, construyen aprendizajes y los movilizan en situaciones reales."},
+{h:"Docentes (orientadores)",p:"Acompañan, articulan el currículo y reflexionan sobre su práctica."},
+{h:"Familias (aliadas)",p:"Acompañan, observan cambios y participan en los espacios de la institución."},
+{h:"Institución educativa (gestora)",p:"Garantiza tiempos, espacios, PEI, SIEE y condiciones pedagógicas."},
+{h:"Comunidad (entorno)",p:"Sabedores y aliados intersectoriales que enriquecen las estrategias."}]},
+{id:"otras",n:"Otras perspectivas",t:"Otras perspectivas de la formación integral",i:"Enriquecen la formación integral según la infografía.",
+I:[
+{h:"Enfoque territorial y contextual",p:"Parte de las realidades y saberes del territorio."},
+{h:"Enfoque de derechos",p:"Garantiza el derecho a la educación y la participación."},
+{h:"Educación socioemocional",p:"Reconoce, regula y expresa emociones; apoyo clave en EE afectados por el sismo del 10 de agosto."},
+{h:"Educación ambiental y sostenibilidad",p:"Cuidado del entorno y del territorio."},
+{h:"Educación para la paz y la ciudadanía",p:"Convivencia, memoria y construcción democrática."}]}
+];
+const EX={
+ruta:[null,null,null,null],
+roles:["Reúne a los formadores de tres microrregiones, compara sus avances y presenta a la ETC un resumen de aprendizajes comunes y de necesidades de apoyo para 2027.",
+"Organiza un encuentro de cierre donde cada tutor presenta una experiencia significativa y la deja registrada en el banco de experiencias con una ficha breve.",
+"Convoca a docentes, seis estudiantes y cuatro acudientes para leer juntos la estrategia de teatro de 2026 desde capacidades, aprendizajes y competencias.",
+"La docente de artes cuenta cómo cambió su planeación al articular la estrategia de danza con sociales y escribe su parte de la narrativa.",
+"La rectora reserva dos jornadas de diciembre para la proyección y pone en la asignación académica las horas de la estrategia de huerta.",
+"Una practicante documenta cómo el club de lectura que apoyó mejoró la participación oral de los estudiantes y qué aprendió para su futura docencia.",
+"La Secretaría asiste a la muestra de cierre del municipio y se compromete a incluir la formación integral en su plan de acción 2027."],
+ver:["Círculo con estudiantes de 6° con preguntas como «¿qué aprendiste que antes no podías hacer?»; sus respuestas se registran en frases textuales, no en formatos.",
+"Tres docentes redactan una narrativa de una página sobre el proyecto de huerta: contexto, qué hicieron, qué falló, qué aprendieron y qué ajustarán.",
+"Muestra con puestos liderados por estudiantes: ellos explican un experimento, presentan una obra y responden preguntas de familias y de un colegio vecino.",
+"Mesa con rectoría y jefes de área que acuerda incorporar la estrategia de deporte al plan de estudios de educación física desde febrero.",
+"El tutor escribe «aprendí a escuchar primero a los docentes; la próxima vez haré las reuniones en horario protegido» y lo sube al banco de experiencias."],
+ejes:["La matriz de ciencias y la estrategia de huerta pasan a ser una unidad del plan de área, con una evaluación formativa común registrada en el SIEE.",
+"El consejo directivo aprueba por acuerdo los tiempos de la estrategia de música y la ETC la prioriza en su agenda de 2027.",
+"En la muestra, los estudiantes miden el agua de un arroyo, presentan los datos en gráficos y defienden una propuesta para cuidarlo.",
+"Estudiantes presentan una coreografía sobre su territorio y se acuerda que la danza entre a la malla de educación artística.",
+"Se crea una comunidad de aprendizaje docente que se reúne cada mes a revisar casos de aula y alimentar el banco de experiencias.",
+"La muestra en una comunidad indígena se hace con sus sabedores, en su lengua y con sus tiempos; la memoria queda escrita como la comunidad decida."],
+cond:["Se reserva en el calendario de noviembre una semana para círculos y muestra, sin reemplazarla por entrega de informes.",
+"El informe del año incluye un apartado con frases de estudiantes sobre lo que aprendieron, escritas o grabadas por ellos.",
+"Se muestra la planeación de una clase donde matemáticas y la estrategia de huerta se evaluaron con una rúbrica compartida.",
+"La muestra cierra con un reconocimiento a los estudiantes y con una conversación honesta sobre lo que debe mejorar."],
+ins:["Documento del EE con apartados de logros, tensiones y proyecciones, y anexos con testimonios de estudiantes, familias, docentes y directivos.",
+"Relato de dos páginas donde el docente reconoce que la primera fase no funcionó y cuenta cómo la rediseñó.",
+"La matriz de lenguaje se actualiza con «se realizó la clase articulada del 12 de septiembre» y se lleva al plan de área.",
+"Carpeta compartida con una ficha por experiencia: nombre, contexto, qué se hizo, aprendizajes y contacto del tutor.",
+"Texto de una a dos páginas donde el tutor reconoce qué capacidades propias fortaleció, por ejemplo facilitar conversaciones difíciles.",
+"Informe de la practicante con dos relatos de experiencias significativas y la caracterización actualizada del EE."],
+niv:["El PEI menciona la formación integral y el EE realiza un piloto con un grupo y una jornada de sensibilización.",
+"Los docentes planean en equipo y cada período revisan cómo avanzan las estrategias, con responsables definidos.",
+"Estudiantes y familias integran comités de las estrategias junto con docentes y directivos.",
+"El EE invita a un colegio vecino a conocer su experiencia y la formación integral se nota en recreos, clases y manual de convivencia."],
+eva:["En el círculo se pregunta «¿qué hacías al inicio y qué haces ahora?» y se registran avances y también dificultades.",
+"Se describe cómo un estudiante argumenta mejor, trabaja en equipo y cuida su entorno, no solo qué nota obtuvo.",
+"Cada estudiante escribe una breve reflexión: «aprendí…, me costó…, quiero seguir aprendiendo…».",
+"Tras analizar resultados internos y externos en diciembre, los docentes definen dos aprendizajes prioritarios y una acción por ciclo."],
+org:["Propósito de formación: estudiantes que cuidan su territorio y argumentan con datos, escrito en el plan de estudios.",null,
+"Una estrategia de pesca artesanal en un colegio costero entra al currículo con saberes de los pescadores del lugar.",
+"El proyecto de lectura de 6° se profundiza en 7° con textos más complejos y proyectos de escritura."],
+rel:["Diario de emociones y proyecto de vida dentro de la estrategia de teatro.",
+"Asambleas de aula donde se acuerdan normas y se resuelven conflictos entre pares.",
+"Salida a un humedal cercano para registrar especies y proponer acciones de cuidado.",
+"Los estudiantes formulan una pregunta de investigación y la responden con datos y fuentes."],
+suj:["Un estudiante lidera la presentación de su proyecto en la muestra y la evalúa con sus compañeros.",
+"Docentes de matemáticas y artes planean juntos una unidad sobre proporciones y diseño.",
+"Una familia acompaña el taller de cocina tradicional y cuenta qué cambios ve en su hijo.",
+"La rectoría incorpora la estrategia en el horario y gestiona el espacio para los ensayos.",
+"Un sabedor local enseña la técnica de tejido y el EE reconoce su aporte."],
+otras:["Se parte de un problema real del barrio, como el manejo de basuras, para diseñar la estrategia.",
+"Los estudiantes conocen sus derechos y participan en el gobierno escolar con propuestas.",
+"Espacios de escucha y actividades de regulación emocional tras el sismo del 10 de agosto.",
+"Huerta escolar con compostaje y campaña de reciclaje liderada por estudiantes.",
+"Mesas de diálogo y proyecto de memoria local con participación de adultos mayores."]};
+const $=id=>document.getElementById(id);
+const nav=document.getElementById("nav"),main=document.getElementById("main");
+S.forEach(s=>{const sec=document.createElement("section");sec.className="sec";sec.id=s.id;sec.hidden=true;
+sec.innerHTML=`<h2>${s.t}</h2><p class="intro">${s.i}</p>`+s.I.map((x,k)=>`<details open><summary>${x.h}</summary><p>${x.p}</p>${(x.e||(EX[s.id]||[])[k])?`<div class="ex"><b>Ejemplo:</b> ${x.e||EX[s.id][k]}</div>`:""}${x.q?`<p class="q"><b>Pregunta guía:</b> ${x.q}</p>`:""}</details>`).join("");main.appendChild(sec)});
+function mk(id,n,t,i,html){const sec=document.createElement("section");sec.className="sec";sec.id=id;sec.hidden=true;sec.innerHTML=`<h2>${t}</h2><p class="intro">${i}</p>`+html;main.appendChild(sec);return{id,n}}
+const rv='<button class="b g" onclick="this.nextElementSibling.hidden=!this.nextElementSibling.hidden">Ver respuesta</button>';
+const M=[{h:"Momento I – Reconocemos y diseñamos",c:"#ae3836",it:["🔎 Diagnóstico participativo","🌎 Lectura de contexto","🧩 Articulación curricular","📝 Diseño contextualizado del PFI EE"],q:"¿Cuál fue el propósito fundamental del Momento I?",a:"Conocer la realidad del establecimiento educativo → identificar necesidades → diseñar una respuesta contextualizada."},
+{h:"Momento II – Implementamos y profundizamos",c:"#c98a00",it:["▶️ Implementación de estrategias de formación integral","📊 Seguimiento centros de interés","🔗 Profundización de la formación integral","🧩 Armonización y articulación curricular","👥 Comunidades de aprendizaje"],q:"Si en el Momento I reconocimos y diseñamos, ¿qué hicimos principalmente en el Momento II?",a:"Implementamos, hicimos seguimiento y profundizamos las estrategias de formación integral."},
+{h:"Momento III – Evaluamos, sistematizamos y proyectamos",c:"#1b7a6b",it:["📊 Evaluar: ¿qué avances y resultados identificamos?","📝 Sistematizar: ¿qué aprendimos de la experiencia?","🔎 Analizar: ¿qué funcionó? ¿qué necesitamos fortalecer?","🚀 Proyectar: ¿qué decisiones y acciones continúan?"],q:"",a:""}];
+const c1=mk("cuando","¿Cuándo se desarrolla?","¿Cuándo se desarrolla el Momento III?","Tiempo destinado para este momento.",
+`<div class="card"><div class="date">13 de octubre de 2026 → 15 de febrero de 2027</div><p><span class="lg st">Inicio: 13 oct 2026</span> <span class="lg en">Finalización: 15 feb 2027</span> <span class="lg rg">Periodo del Momento III</span></p><div class="zg" id="cal"></div></div>
+<div class="ex"><b>Tenga presente:</b> el Momento III incluye el inicio del año escolar 2027; las semanas de desarrollo institucional de diciembre y enero son espacio para el trabajo colaborativo y el uso pedagógico de resultados.</div>`);
+const c2=mk("venimos","¿De dónde venimos?","¿De dónde venimos?","Breve recuento de los tres momentos del PTAFI 3.0.",
+M.map(m=>`<div class="card" style="border-top:5px solid ${m.c}"><h3 style="margin:0 0 6px;color:${m.c}">${m.h}</h3><ul>${m.it.map(x=>`<li>${x}</li>`).join("")}</ul>${m.q?`<p><b>${m.q}</b></p>${rv}<div class="ex" hidden>${m.a}</div>`:`<p><b>Esto es lo que vamos a recorrer a partir de aquí.</b></p>`}</div>`).join(""));
+(()=>{const A=new Date(2026,9,13),B=new Date(2027,1,15),MN=["Octubre","Noviembre","Diciembre","Enero","Febrero"],DN=["L","M","X","J","V","S","D"];
+$("cal").innerHTML=MN.map((m,k)=>{const y=k<3?2026:2027,mo=(9+k)%12,f=(new Date(y,mo,1).getDay()+6)%7,n=new Date(y,mo+1,0).getDate();let h=`<div class="cm"><b>${m} ${y}</b><div class="cg">`+DN.map(d=>`<i class="dn">${d}</i>`).join("")+"<i></i>".repeat(f);
+for(let d=1;d<=n;d++){const t=new Date(y,mo,d),c=+t==+A?"st":+t==+B?"en":t>A&&t<B?"rg":"";h+=`<i class="${c}">${d}</i>`}return h+"</div></div>"}).join("")})();
+S.unshift(c1,c2);
+S.push({id:"cron",n:"Cronograma"});
+const dims=["Ambiental","Ciudadana y política","Cognitiva","Comunicativa y creativa","Corporal","Cultural","Ética","Memoria histórica","Socioemocional"];
+const cs=document.createElement("section");cs.className="sec";cs.id="cron";cs.hidden=true;
+cs.innerHTML=`<h2>Cronograma Momento III</h2><p class="intro noprint">Diligencie, edite y exporte a PDF. Los datos se guardan en este navegador cuando es posible.</p>
+<div class="fields"><input id="f1" placeholder="Establecimiento educativo"><input id="f2" placeholder="Docente tutor/a"><input id="f3" placeholder="Microrregión / Municipio"></div>
+<div class="tools"><button class="b g" onclick="addRow()">+ Agregar actividad</button><button class="b g" onclick="preload()">Cargar plantilla sugerida</button><button class="b g" onclick="clr()">Limpiar</button><button class="b" onclick="pdf()">Exportar PDF</button></div><p id="msg" class="intro noprint"></p><div class="tools" hidden></div>
+<div class="tw"><table><thead><tr><th>#</th><th>Actividad</th><th>Fase</th><th>Responsable</th><th>Inicio</th><th>Fin</th><th>Estado</th><th>Observaciones</th><th class="noprint"></th></tr></thead><tbody id="tb"></tbody></table></div>`;
+main.appendChild(cs);
+const eh=v=>String(v==null?"":v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+let ST={},META={},CNT=0,ACT=0;const SS=[0,0,0,0],OPT={};
+
+let CDB=null,CT=null;
+const cstat=t=>{const e=document.getElementById("cst");if(e)e.textContent=t};
+const pst=()=>{ST._at=Date.now();csave()};
+function csave(){clearTimeout(CT);CT=setTimeout(async()=>{if(!CDB){cstat("Guardado solo en este navegador.");return}try{await CDB.set({json:JSON.stringify({st:ST,id:ID,at:Date.now()})});cstat("💾 Guardado en su cuenta ✓ "+new Date().toLocaleTimeString("es-CO",{hour:"2-digit",minute:"2-digit"}))}catch(e){cstat("No se pudo guardar en su cuenta; intente de nuevo.")}},700)}
+const vl=k=>{const v=ST[k];return(Array.isArray(v)?v.join("; "):v==null?"":String(v)).trim()};
+const reg=(k,l,ph)=>{META[k]=META[k]||{o:++CNT};META[k].l=l;META[k].ph=ph};
+const DIM=["Ambiental","Ciudadana y política","Cognitiva","Comunicativa y creativa","Corporal","Cultural","Ética","Memoria histórica","Socioemocional"];
+function fx(ph,k,l,r){reg(k,l,ph);return `<label class="fl2">${l}</label><textarea data-f="${k}" rows="${r||3}">${eh(ST[k])}</textarea>`}
+function ip(ph,k,l,t){reg(k,l,ph);return `<label class="fl2">${l}</label><input ${t?`type="${t}" `:""}data-f="${k}" value="${eh(ST[k])}">`}
+function sl(ph,k,l,o){reg(k,l,ph);return `<label class="fl2">${l}</label><select data-f="${k}"><option value="">Elija…</option>${o.map(x=>`<option ${ST[k]==x?"selected":""}>${x}</option>`).join("")}</select>`}
+function ch(ph,k,l,o){reg(k,l,ph);OPT[k]=o;const a=ST[k]||[];return `<label class="fl2">${l}</label><div class="zg">${o.map((x,i)=>`<button class="op ${a.includes(x)?"sel":""}" onclick="tgl('${k}',${i})">${a.includes(x)?"☑":"☐"} ${x}</button>`).join("")}</div>`}
+function tgl(k,i){const a=ST[k]||[],x=OPT[k][i],j=a.indexOf(x);j>=0?a.splice(j,1):a.push(x);ST[k]=a;pst();rer()}
+function qz(id,q,o,ok){const p=ST["q"+id];return `<div class="card"><h4>${q}</h4>${o.map((x,i)=>`<button class="op ${p===i?(x[1]?"good":"bad"):""}" onclick="ST.q${id}=${i};${x[1]?`ST.ok${id}=1;`:""}pst();rer()">${x[0]}</button>`).join("")}${p==null?"":o[p][1]?`<div class="ex">🎉 <b>¡Felicitaciones!</b> ${ok}</div>`:`<div class="ex bad2"><b>Intenta nuevamente.</b> ${o[p][2]}</div>`}</div>`}
+const EXN=i=>vl("a_e"+i+"_n")||"Experiencia "+(i+1),EA=()=>[0,1,2].filter(i=>vl("a_e"+i+"_n"));
+const NOEX=()=>`<div class="ex bad2">Primero registre al menos una experiencia ancla (Fase 1 · estación 3). Es el hilo que conecta las cuatro fases.</div><button class="b g" onclick="SS[0]=2;fp(0)">Ir a registrarla</button>`;
+const nt=t=>`<div class="ex"><b>${t}</b></div>`,sub=t=>`<p class="q">${t}</p>`;
+const REQ=[[["okQ","Pregunta de sentido"],["okD","Ejercicio de dimensiones"],["a_e0_n","Experiencia ancla 1"],["a_e0_h","Qué se hizo"],["a_e0_ev","Evidencias"]],
+[["b_vE","Voz de estudiantes"],["b_vF","Voz de familias"],["b_vD","Voz de docentes"],["b_l0_dim","Dimensiones (exp. 1)"],["b_l0_cap","Capacidad (exp. 1)"],["b_l0_apr","Aprendizaje (exp. 1)"],["b_l0_comp","Competencia (exp. 1)"],["b_l0_niv","Nivel de evidencia (exp. 1)"],["b_pfi","Valoración del PFI-EE"],["b_mat","De matrices a planeaciones"],["b_av","Avances"],["b_de","Desafíos"]],
+[["c_h0_h","Hallazgo 1"],["c_h0_ev","Evidencia del hallazgo"],["c_h0_int","Interpretación"],["c_ap","Aprendizajes"],["c_p0","Práctica significativa"],["c_pz","Tipo de pieza"],["c_msg","Mensaje principal"],["c_mn","Nombre de la muestra"],["c_mt","Tipo de muestra"],["c_mq","Qué mostrar"]],
+[["d_dec0","Decisión sobre la experiencia 1"],["d_t0_t","Transformación prioritaria 1"],["d_t0_a","Acción"],["d_t0_r","Responsable"],["d_t0_f","Fecha"],["d_t0_ind","Indicador de avance"],["d_in","Dónde se institucionaliza"],["d_v1","Visión: lo aprendido"],["d_v2","Visión: 2027"],["d_v3","Visión: compromiso"]]];
+const pct=i=>Math.round(REQ[i].filter(r=>vl(r[0])).length/REQ[i].length*100),pend=i=>REQ[i].filter(r=>!vl(r[0])).map(r=>r[1]);
+const DX=[["Huerta escolar con compostaje","Ambiental"],["Elección del personero y debates","Ciudadana y política"],["Obra de teatro sobre el territorio","Comunicativa y creativa"],["Torneo y juegos tradicionales","Corporal"],["Entrevista a adultos mayores sobre la historia del barrio","Memoria histórica"],["Círculo para hablar de emociones tras el sismo","Socioemocional"]];
+const GE=["¿Qué actividades o experiencias recuerdan especialmente? ¿Por qué?","¿Qué sienten que aprendieron o desarrollaron?","¿Hay algo que ahora pueden hacer, comprender o expresar de manera diferente?","¿Cambió la forma en que se relacionan con compañeros y docentes?","¿Qué debería mantenerse, fortalecerse o cambiar?"],
+GF=["¿Qué experiencias de formación integral les han contado sus hijos e hijas?","¿Han observado cambios en ellos? ¿Cuáles?","¿Han encontrado oportunidades para conocer, acompañar o participar?","¿Qué experiencias consideran importante mantener o fortalecer?"],
+GD=["¿Qué cambió en sus prácticas pedagógicas?","¿Qué cambió en la articulación curricular y el trabajo colaborativo?","¿Qué aprendizajes y capacidades reconocen en los estudiantes?","¿Qué ajustes necesitan?"];
+const gq=(t,a)=>`<details><summary>Preguntas guía · ${t}</summary><ul class="q">${a.map(x=>`<li>${x}</li>`).join("")}</ul></details>`;
+const DOCS=["PEI","PMI","SIEE","Plan de estudios","Manual o acuerdo de convivencia","Asignación académica","Tiempos y espacios","Alianzas"];
+const dimStats=()=>{const c={};DIM.forEach(d=>c[d]=0);EA().forEach(i=>(ST["b_l"+i+"_dim"]||[]).forEach(d=>c[d]++));return c};
+const draft=()=>{const L=[],e=EA();if(e.length)L.push("EXPERIENCIAS: "+e.map(EXN).join("; "));e.forEach(i=>{if(vl("a_e"+i+"_h"))L.push(EXN(i)+" · qué se hizo: "+vl("a_e"+i+"_h"))});[0,1,2].forEach(i=>{if(vl("c_h"+i+"_h"))L.push("HALLAZGO "+(i+1)+": "+vl("c_h"+i+"_h")+(vl("c_h"+i+"_ev")?" (evidencia: "+vl("c_h"+i+"_ev")+")":"")+(vl("c_h"+i+"_int")?" · interpretación: "+vl("c_h"+i+"_int"):""))});if(vl("c_ap"))L.push("APRENDIZAJES: "+vl("c_ap"));if(vl("c_p0"))L.push("PRÁCTICA QUE EL ESTABLECIMIENTO CONSIDERA SIGNIFICATIVA: "+vl("c_p0")+(vl("c_p1")?" — "+vl("c_p1"):""));if(vl("b_de"))L.push("DESAFÍOS Y ASPECTOS POR FORTALECER: "+vl("b_de"));return L.join("\n\n")};
+const G=[[
+()=>`<div class="hero"><h2 style="border:0;margin:0">APROPIAR · COMPRENDER PARA TRANSFORMAR</h2><p>Apropiar no es memorizar conceptos: es construir comprensiones compartidas que permitan interpretar lo vivido en 2026, reconocer avances y desafíos y orientar las decisiones del Momento III.</p></div>`+qz("A","¿Qué significa «apropiar» en el PTAFI 3.0?",[["Memorizar los conceptos principales.",0,"Memorizar no basta: se busca comprender para interpretar lo vivido."],["Conocer los documentos del programa.",0,"Conocerlos es un punto de partida; apropiar es usarlos para leer las experiencias y decidir."],["Construir comprensiones que permitan interpretar lo vivido y orientar decisiones.",1]],"Apropiar es construir comprensiones compartidas para interpretar las experiencias, reconocer avances y desafíos y orientar las decisiones del Momento III.").replace("ST.okA=1","ST.okQ=1"),
+()=>`<h3>Marco común en dos minutos</h3><div class="zg">${[["💡 Capacidades","Potencial inherente de cada estudiante para ser y hacer de manera digna."],["📘 Aprendizajes","Resultados formativos visibles que emergen en las Estrategias de Formación Integral."],["🎯 Competencias","Movilización ética y eficaz de capacidades y aprendizajes ante situaciones reales del entorno."]].map(c=>`<div class="card"><b>${c[0]}</b><p>${c[1]}</p></div>`).join("")}</div>${sub("Nueve dimensiones: "+DIM.join(", ")+".")}<h4>Ejercicio: ¿qué dimensión se hace más visible en cada ejemplo?</h4>${sub("Ejemplos ilustrativos. Una experiencia puede fortalecer varias dimensiones; esto es una guía de lectura.")}<div class="card">${DX.map((x,i)=>{const k="dx"+i;META[k]={o:0,ph:-1,l:k};const v=ST[k];return `<div class="prow"><span>${x[0]} ${ST.dxc&&v?(v==x[1]?"✔":"↺"):""}</span><select data-f="${k}"><option value="">Elija…</option>${DIM.map(d=>`<option ${v==d?"selected":""}>${d}</option>`).join("")}</select></div>`}).join("")}<button class="b" onclick="ST.dxc=1;if(DX.every((x,i)=>ST['dx'+i]==x[1]))ST.okD=1;pst();rer()">Revisar</button>${ST.dxc?(DX.every((x,i)=>ST["dx"+i]==x[1])?`<div class="ex">🎉 <b>¡Felicitaciones!</b> Ya cuenta con un lenguaje común para leer sus experiencias.</div>`:`<div class="ex bad2"><b>Intenta nuevamente.</b> Revise los ejemplos marcados con ↺.</div>`):""}</div>`,
+()=>`<h3>Sus experiencias ancla</h3>${sub("Elija de 1 a 3 experiencias de 2026. Serán el hilo de las fases siguientes: no tendrá que volver a describirlas.")}${[0,1,2].map(i=>{const body=ip(0,"a_e"+i+"_n","Nombre de la experiencia")+fx(0,"a_e"+i+"_h","Experiencia "+(i+1)+" · ¿Qué hicimos y quiénes participaron?",3)+fx(0,"a_e"+i+"_ev","Experiencia "+(i+1)+" · ¿Qué evidencias tenemos?",2)+ip(0,"a_e"+i+"_pr","Experiencia "+(i+1)+" · ¿Qué buscábamos fortalecer?");return i==0?`<div class="card"><b>Experiencia 1 (obligatoria)</b>${body}</div>`:`<details ${vl("a_e"+i+"_n")?"open":""}><summary>Experiencia ${i+1} (opcional)</summary>${body}</details>`}).join("")}`],
+[
+()=>`<h3>Escuchar antes de valorar</h3>${sub("Realice círculos con estudiantes, un encuentro con familias y un taller con docentes. Aquí registra la síntesis, no cada pregunta.")}<div class="card">${gq("estudiantes",GE)}${fx(1,"b_vE","ESTUDIANTES · Síntesis: lo que dijeron (frases textuales) y lo que se repite",4)}</div><div class="card">${gq("familias",GF)}${fx(1,"b_vF","FAMILIAS · Síntesis: lo que observan en sus hijos e hijas y lo que se repite",4)}</div><div class="card">${gq("docentes",GD)}${fx(1,"b_vD","DOCENTES · Síntesis: cambios en prácticas, articulación y trabajo colaborativo",4)}</div>`,
+()=>{const e=EA();return `<h3>Lectura por experiencia</h3>${sub("Una mirada breve por cada experiencia ancla: dimensiones, qué se habilitó y qué tan sólida es la evidencia.")}${e.length?e.map(i=>`<div class="card"><b>${eh(EXN(i))}</b>${ch(1,"b_l"+i+"_dim",EXN(i)+" · Dimensiones que se fortalecieron",DIM)}${ip(1,"b_l"+i+"_cap",EXN(i)+" · Capacidad que vimos habilitarse")}${ip(1,"b_l"+i+"_apr",EXN(i)+" · Aprendizaje que emergió")}${ip(1,"b_l"+i+"_comp",EXN(i)+" · Competencia movilizada en una situación real")}${ip(1,"b_l"+i+"_cmb",EXN(i)+" · Cambio observado (antes → después)")}${sl(1,"b_l"+i+"_niv",EXN(i)+" · Solidez de la evidencia",["Sin evidencia aún","Evidencia parcial","Evidencia sólida"])}</div>`).join(""):NOEX()}`},
+()=>`<h3>De lo diseñado a lo vivido</h3>${sub("Escala de reflexión, no valoración oficial.")}${sl(1,"b_pfi","¿En qué medida el PFI-EE orientó las prácticas cotidianas y se convirtió en referente para decidir?",["1 — Aún no","2 — En proceso","3 — Parcialmente consolidado","4 — Consolidado"])}${sl(1,"b_mat","¿Las matrices de articulación curricular se reflejaron en planeaciones reales?",["Sí, claramente","En parte","Aún no","Sin evidencias suficientes","No aplica"])}${fx(1,"b_pev","¿Qué evidencias sustentan estas dos valoraciones?",3)}`,
+()=>{const c=dimStats(),s=DIM.filter(d=>c[d]),n=DIM.filter(d=>!c[d]);return `<h3>Mirada global</h3>${fx(1,"b_av","Avances: ¿qué logramos y qué cambió?",3)}${fx(1,"b_de","Desafíos: ¿qué dificultades encontramos y qué necesita fortalecerse?",3)}<label class="chk"><input type="checkbox" ${ST.b_sna?"checked":""} onchange="ST.b_sna=this.checked?1:0;pst();rer()"> Lo del sismo no aplica a nuestro contexto.</label>${ST.b_sna?"":fx(1,"b_sis","Afectaciones por el sismo y ajustes pedagógicos para garantizar el servicio educativo",3)}<div class="card"><b>Lo que usted señaló (calculado)</b><p>Dimensiones señaladas: ${s.length?s.map(d=>d+" ("+c[d]+")").join(", "):"<i>aún ninguna</i>"}</p><p>Sin señalar todavía: ${n.length?n.join(", "):"ninguna"}. Pueden ser dimensiones por visibilizar en 2027 o aún no leídas.</p></div>`}],
+[
+()=>{const ev=EA().filter(i=>vl("a_e"+i+"_ev")).map(i=>`<li>${eh(EXN(i))}: ${eh(vl("a_e"+i+"_ev"))}</li>`).concat(["b_vE","b_vF","b_vD"].filter(vl).map(k=>`<li>${META[k]?eh(META[k].l.split("·")[0]):""} (síntesis de voces registrada)</li>`));return `<h3>Hallazgos</h3><div class="card"><b>📎 Banco de evidencias (armado con lo que ya registró)</b><ul>${ev.length?ev.join(""):"<li><i>Aún no hay evidencias registradas.</i></li>"}</ul>${fx(2,"c_ev","Otras evidencias disponibles (documentos, producciones, registros)",2)}</div>${sub("Un hallazgo es algo relevante que surge al mirar la experiencia organizada y debe poder sustentarse con una evidencia.")}${[0,1,2].map(i=>{const b=fx(2,"c_h"+i+"_h","Hallazgo "+(i+1)+" · ¿Qué encontramos?",2)+fx(2,"c_h"+i+"_ev","Hallazgo "+(i+1)+" · ¿Qué evidencia lo sustenta?",2)+fx(2,"c_h"+i+"_int","Hallazgo "+(i+1)+" · ¿Qué significa para nosotros?",2);return i==0?`<div class="card"><b>Hallazgo 1 (obligatorio)</b>${b}</div>`:`<details ${vl("c_h"+i+"_h")?"open":""}><summary>Hallazgo ${i+1} (opcional)</summary>${b}</details>`}).join("")}`},
+()=>`<h3>Aprendizajes y práctica significativa</h3>${fx(2,"c_ap","¿Qué aprendimos como establecimiento? (sobre estudiantes, prácticas, relaciones y condiciones que favorecieron o dificultaron)",5)}<div class="card"><b>Una práctica que el establecimiento considera significativa</b>${ip(2,"c_p0","¿Qué hicimos?")}${fx(2,"c_p1","¿Por qué resulta significativa y qué evidencia la sustenta?",3)}${ip(2,"c_p2","¿Qué podría fortalecerse?")}</div>`,
+()=>{if(!ST.c_rele)ST.c_rel=draft();return `<h3>Relato y pieza</h3>${sub("El borrador se arma solo con lo que usted registró; edítelo libremente.")}${fx(2,"c_rel","Relato de la experiencia (borrador editable)",10)}<button class="b g" onclick="ST.c_rele=0;rer()">Rearmar borrador con mis registros</button>${sl(2,"c_pz","Pieza para comunicar",["Tablero","Gráfico","Presentación","Narrativa","Pieza gráfica","Boletín"])}${ip(2,"c_msg","Mensaje principal de la pieza")}${ip(2,"c_aud","¿A quiénes queremos comunicarlo?")}`},
+()=>`<h3>Muestra integradora de cierre 2026</h3>${sub("No hay formato único. Fechas, lugares, responsables y presupuesto los define el establecimiento.")}${ip(2,"c_mn","Nombre de la muestra")}${sl(2,"c_mt","Tipo de muestra",["Festival de saberes","Exposición comunitaria","Foro estudiantil","Muestra artística","Otra forma pertinente al contexto"])}${ch(2,"c_mi","¿A quiénes invitaremos?",["Familias","Actores comunitarios","Aliados intersectoriales","Otros EE de la microrregión","Otros"])}${fx(2,"c_mq","¿Qué experiencias, aprendizajes y evidencias queremos mostrar? ¿Qué capacidades y competencias harán visibles?",4)}${fx(2,"c_mp","¿Quiénes participarán y qué necesitamos preparar?",3)}`],
+[
+()=>{const e=EA();return `<h3>Decidir sobre lo que ya tenemos</h3>${e.length?e.map(i=>`<div class="card"><b>${eh(EXN(i))}</b><p class="q">Lo que registró en Fase 2: solidez de evidencia «${eh(vl("b_l"+i+"_niv")||"sin registrar")}» · cambio: ${eh(vl("b_l"+i+"_cmb")||"sin registrar")}</p>${sl(3,"d_dec"+i,EXN(i)+" · Decisión",["Mantener","Transformar","Cerrar"])}${ip(3,"d_why"+i,EXN(i)+" · ¿Por qué y con qué evidencia?")}</div>`).join(""):NOEX()}${ip(3,"d_new","¿Qué necesitamos crear que hoy no existe?")}`},
+()=>{const tr=EA().filter(i=>vl("d_dec"+i)=="Transformar").map(EXN);return `<h3>Transformaciones prioritarias (máx. 3)</h3>${sub("Cada una nace de un hallazgo o desafío y trae su indicador de avance: así queda lista para el seguimiento.")}${tr.length?nt("Experiencias que decidió transformar: "+tr.map(eh).join(", ")):""}${[0,1,2].map(i=>{const b=ip(3,"d_t"+i+"_t","Transformación "+(i+1)+" · ¿Qué queremos cambiar?")+ip(3,"d_t"+i+"_a","Transformación "+(i+1)+" · Acción concreta")+ip(3,"d_t"+i+"_r","Transformación "+(i+1)+" · Responsable")+ip(3,"d_t"+i+"_f","Transformación "+(i+1)+" · Fecha o período","text")+ip(3,"d_t"+i+"_c","Transformación "+(i+1)+" · Recurso o condición necesaria")+ip(3,"d_t"+i+"_ind","Transformación "+(i+1)+" · ¿Cómo sabremos que avanzamos? (indicador o evidencia)");return i==0?`<div class="card"><b>Transformación 1 (obligatoria)</b>${b}</div>`:`<details ${vl("d_t"+i+"_t")?"open":""}><summary>Transformación ${i+1} (opcional)</summary>${b}</details>`}).join("")}`},
+()=>{const s=ST.d_in||[];return `<h3>Institucionalizar y sostener</h3>${nt("Integrar en el SIEE no es calificar igual: es que el sistema reconozca y dé valor a capacidades, aprendizajes y competencias desde la evaluación formativa, en lugar de dejarlas como experiencia paralela.")}${ch(3,"d_in","¿Dónde necesitamos formalizar lo construido?",DOCS)}${s.map(d=>ip(3,"d_x"+DOCS.indexOf(d),d+" · ¿Qué cambio concreto, quién participa y qué instancia lo avala?")).join("")}${fx(3,"d_cond","Condiciones: tiempos, espacios, recursos y alianzas que necesitamos (con cuáles aliados seguir, revisar o cerrar)",4)}${fx(3,"d_res","Uso pedagógico de resultados: ¿qué evaluaciones tenemos y qué decisión tomaremos en las semanas de desarrollo institucional?",4)}<p class="q">La herramienta solo ayuda a identificar qué requiere revisión; no sustituye al Consejo Académico, al Consejo Directivo ni a otras instancias.</p>`},
+()=>`<h3>Visión 2027</h3>${fx(3,"d_v1","En 2026 reconocimos y aprendimos que…",3)}${fx(3,"d_v2","Queremos que en 2027…",3)}${fx(3,"d_v3","Para lograrlo nos comprometemos a…",3)}<div class="tools"><button class="b" onclick="ST.v4=${ST.v4?0:1};rer()">${ST.v4?"Ocultar":"Generar nuestra proyección 2027"}</button><button class="b g" onclick="xp(3)">EXPORTAR PDF DE LA FASE</button><button class="b g" onclick="show('seg')">Ir al seguimiento</button></div>${ST.v4?`<div class="hero"><h2 style="border:0;margin:0">VISIÓN COMPARTIDA 2027</h2>${["d_v1","d_v2","d_v3"].map(k=>`<p>${vl(k)?eh(vl(k)):"<i>Aún no se ha registrado información.</i>"}</p>`).join("")}</div><div class="card"><pre class="pre">${eh(TXT(3).split("\n\n").slice(1).join("\n\n"))}</pre></div>`:""}`]];
+const PH=[["Fase 1 · APROPIAR","Sentido,Marco común,Experiencias ancla","Apropiar no es memorizar: es construir comprensiones compartidas para interpretar y decidir."],["Fase 2 · EVALUAR","Voces,Lectura por experiencia,De lo diseñado a lo vivido,Mirada global","Evaluar no es contar lo que hicimos: es comprender lo que ocurrió a partir de lo que hicimos."],["Fase 3 · SISTEMATIZAR","Hallazgos,Aprendizajes y práctica,Relato y pieza,Muestra","Sistematizar no es solo guardar: es organizar, interpretar y compartir lo que aprendimos."],["Fase 4 · PROYECTAR","Decidir,Transformaciones,Institucionalizar,Visión 2027","No proyectamos desde cero: proyectamos desde lo que aprendimos."]];
+function rend(i){const st=PH[i][1].split(","),n=SS[i],p=pct(i);$("ph"+i).innerHTML=`<h3>${PH[i][0]}</h3><div class="evc">${PH[i][2]}</div><div class="pg">${st.map((x,k)=>`<span class="${k<n?"d":k==n?"c":""}" style="cursor:pointer" onclick="SS[${i}]=${k};rend(${i})">${k+1}. ${x}</span>`).join("")}</div><div class="bar"><i style="width:${p}%"></i></div><p class="q">Avance de la fase: ${p}%${pend(i).length?" · pendiente: "+pend(i).slice(0,3).join(", ")+(pend(i).length>3?"…":""):" · ✔ completa"}</p><div class="scr">${G[i][n]()}<div class="nv">${n?`<button class="b g" onclick="SS[${i}]=${n-1};rend(${i})">Volver</button>`:"<span></span>"}${n<st.length-1?`<button class="b" onclick="SS[${i}]=${n+1};rend(${i});$('ph${i}').scrollIntoView()">Continuar</button>`:i<3?`<button class="b" onclick="fp(${i+1})">Ir a la Fase ${i+2}</button>`:`<button class="b" onclick="show('seg')">Ver seguimiento</button>`}</div></div>`}
+function rer(){ACT==4?seg():rend(ACT)}
+function fp(i){ACT=i;$("ft").value=i;document.querySelectorAll("#fases .fpn").forEach((x,k)=>x.hidden=k!=i);rend(i);const f=$("fases");if(f&&!f.hidden)f.scrollIntoView()}
+const HD=()=>"Tutor(es): "+$("fT").value+"\nEstablecimiento educativo: "+$("fE").value+"\nCódigo DANE: "+$("fD").value+"\nDepartamento: "+$("fDp").value+" · Municipio: "+$("fMn").value+"\n\n";
+const TT=["Fase 1 · APROPIAR: comprender para transformar","Fase 2 · EVALUAR: lectura colectiva del año","Fase 3 · SISTEMATIZAR: de la experiencia al conocimiento compartible","Fase 4 · PROYECTAR: visión compartida hacia 2027","SEGUIMIENTO DEL PROCESO"];
+function ind(){const e=EA(),ev=[0,1,2].filter(i=>vl("a_e"+i+"_ev")).length+["b_vE","b_vF","b_vD"].filter(vl).length+[0,1,2].filter(i=>vl("c_h"+i+"_ev")).length,d={Mantener:0,Transformar:0,Cerrar:0};e.forEach(i=>{if(d[vl("d_dec"+i)]!=null)d[vl("d_dec"+i)]++});return{e:e.length,ev,h:[0,1,2].filter(i=>vl("c_h"+i+"_h")).length,t:[0,1,2].filter(i=>vl("d_t"+i+"_t")).length,d,dm:DIM.filter(x=>dimStats()[x]).length}}
+function TXT(i){let t="PTAFI 3.0 · "+TT[i]+"\n"+HD();if(i<4)t+="Avance de la fase: "+pct(i)+"%\n\n";else{const x=ind();t+="INDICADORES\nExperiencias ancla: "+x.e+"\nEvidencias registradas: "+x.ev+"\nHallazgos: "+x.h+"\nTransformaciones prioritarias: "+x.t+"\nDecisiones: mantener "+x.d.Mantener+", transformar "+x.d.Transformar+", cerrar "+x.d.Cerrar+"\nDimensiones señaladas: "+x.dm+" de 9\n"+[0,1,2,3].map(k=>"Avance Fase "+(k+1)+": "+pct(k)+"%").join("\n")+"\n\n"}
+const ks=Object.keys(META).filter(k=>META[k].ph==i&&vl(k)).sort((a,b)=>META[a].o-META[b].o);return t+(ks.length?ks.map(k=>META[k].l+"\n"+vl(k)).join("\n\n"):"Aún no se ha registrado información.")}
+function seg(){const x=ind(),tf=[0,1,2].filter(i=>vl("d_t"+i+"_t"));$("sg").innerHTML=`<div class="zg">${[["Experiencias ancla",x.e],["Evidencias registradas",x.ev],["Hallazgos",x.h],["Transformaciones",x.t],["Dimensiones señaladas",x.dm+"/9"],["Decisiones M/T/C",x.d.Mantener+"/"+x.d.Transformar+"/"+x.d.Cerrar]].map(c=>`<div class="card"><div class="kpi">${c[1]}</div>${c[0]}</div>`).join("")}</div><h4>Avance por fase</h4>${[0,1,2,3].map(i=>`<div class="card"><b>${PH[i][0]}</b> · ${pct(i)}%<div class="bar"><i style="width:${pct(i)}%"></i></div>${pend(i).length?`<details><summary>Pendiente (${pend(i).length})</summary><p>${pend(i).join(" · ")}</p></details>`:"✔ Completa"}</div>`).join("")}<h4>Seguimiento de las transformaciones</h4>${sub("Actualice este tablero en cada conversación de seguimiento. Los datos los registra el establecimiento.")}${tf.length?tf.map(i=>`<div class="card"><b>${eh(vl("d_t"+i+"_t"))}</b><p class="q">Acción: ${eh(vl("d_t"+i+"_a")||"—")} · Responsable: ${eh(vl("d_t"+i+"_r")||"—")} · Indicador: ${eh(vl("d_t"+i+"_ind")||"—")}</p>${sl(4,"s_est"+i,"Transformación "+(i+1)+" · Estado",["Por iniciar","En curso","Logrado","Requiere ajuste"])}${ip(4,"s_rev"+i,"Transformación "+(i+1)+" · Próxima revisión","date")}${fx(4,"s_av"+i,"Transformación "+(i+1)+" · Avance observado y evidencia",2)}${ip(4,"s_aj"+i,"Transformación "+(i+1)+" · Ajuste acordado")}</div>`).join(""):`<div class="ex bad2">Aún no hay transformaciones. Regístrelas en la Fase 4 (estación 2).</div>`}${ip(4,"s_inst","Instancia o equipo que hará el seguimiento")}${ip(4,"s_next","Fecha de la próxima conversación de seguimiento","date")}<div class="tools"><button class="b" onclick="xp(4)">EXPORTAR PDF DE SEGUIMIENTO</button></div><p id="xm4" class="q"></p>`}
+const cl=t=>String(t).replace(/🟢/g,"[Verde] ").replace(/🟡/g,"[Amarillo] ").replace(/🔴/g,"[Rojo] ").replace(/🔵/g,"[Azul] ").replace(/[^\u0020-\u00FF\u2013\u2014\u2018\u2019\u201C\u201D\u2022\u2026\n]/g,"");
+const PUR=["Busca comprender y apropiarse de los Lineamientos Curriculares para la Formación Integral y de los referentes del PTAFI 3.0, para construir un marco común de interpretación y de toma de decisiones. Apropiar no es memorizar: es construir comprensiones compartidas para leer lo vivido durante 2026.",
+"Busca valorar lo que realmente ocurrió durante el año, más allá de contar estrategias o productos: qué capacidades se habilitaron en las y los estudiantes, qué aprendizajes emergieron y qué competencias se movilizaron en situaciones reales, a partir de una lectura colectiva con docentes, estudiantes y familias.",
+"Busca organizar, analizar e interpretar la información recogida durante el proceso para identificar aprendizajes, hallazgos, prácticas significativas y aspectos por fortalecer, y convertir la experiencia en conocimiento pedagógico útil para decidir y compartible con la comunidad.",
+"Busca identificar, a partir de las evidencias y aprendizajes de 2026, los cambios que el establecimiento necesita para avanzar en la formación integral, y definir las condiciones institucionales que permitan sostenerlos durante 2027.",
+"Busca dar continuidad al proceso: reunir los indicadores de lo construido y registrar el avance, los ajustes y las próximas revisiones de las transformaciones que el establecimiento priorizó."];
+function xp(i){const m=$(i==4?"xm4":"xm"),F=[["fE","Establecimiento educativo"],["fD","Código DANE"],["fT","Tutor(es)"]],v=F.map(x=>$(x[0]).value.trim()),e=F.findIndex((x,k)=>!v[k]);
+if(e>=0){m.textContent="Para exportar el PDF complete: "+F[e][1]+".";return}
+try{const mun=$("fMn").value.trim(),dep=$("fDp").value.trim(),nom=TT[i],hoy=new Date().toLocaleDateString("es-CO",{day:"numeric",month:"long",year:"numeric"}),d=new window.jspdf.jsPDF({unit:"mm",format:"letter"});let y=0,pg=1,o=0;
+const foot=()=>{d.setFont("helvetica","normal");d.setFontSize(8);d.setTextColor(110,110,110);d.text(cl("Pág. "+pg+"  ·  Informe generado con el instrumento de Leonardo Orozco, tutor del Atlántico"),12,274)};
+const hd=()=>{d.setFillColor(174,56,54);d.rect(0,0,216,40,"F");d.setTextColor(255,255,255);d.setFont("helvetica","bold");d.setFontSize(15);const nmz=d.splitTextToSize(cl(v[0].toUpperCase()),190).slice(0,2);d.text(nmz,108,11,{align:"center"});o=nmz.length>1?7:0;d.setFontSize(10);d.text(cl("PTAFI 3.0 · Momento III 2026 · "+nom).slice(0,110),108,18+o,{align:"center"});d.setFont("helvetica","normal");d.setFontSize(8.5);d.text(cl("Código DANE: "+v[1]+"  ·  "+mun+", "+dep),108,24+o,{align:"center"});d.text(cl("Tutor(es): "+v[2]).slice(0,120),108,29+o,{align:"center"});y=48+o};
+const put=(t,sz,b,col,gap,j)=>{d.setFont("helvetica",b?"bold":"normal");d.setFontSize(sz);d.setTextColor(col[0],col[1],col[2]);String(t).split("\n").forEach(ln=>{const a=d.splitTextToSize(cl(ln)||" ",186);a.forEach((s,k)=>{if(y>268){foot();d.addPage();pg++;hd();d.setFont("helvetica",b?"bold":"normal");d.setFontSize(sz);d.setTextColor(col[0],col[1],col[2])}if(j&&k<a.length-1)jl(d,s,12,y,186);else d.text(s,12,y);y+=sz*.42+1.3})});y+=gap||0};
+const H=t=>{y+=2;put(t,11,1,[174,56,54],1)},P=t=>put(t,9.5,0,[30,30,30],1.5,1),L=t=>put(t,9.5,1,[25,55,109],0);
+hd();
+d.setFont("helvetica","bold");d.setFontSize(14);d.setTextColor(30,30,30);d.text("INFORME INSTITUCIONAL",108,y,{align:"center"});y+=6;d.setFontSize(11);d.setTextColor(174,56,54);d.splitTextToSize(cl(nom),186).forEach(s=>{d.text(s,108,y,{align:"center"});y+=5.5});y+=3;
+H("1. INTRODUCCIÓN");
+P("El presente informe fue elaborado por "+v[2]+", docente(s) tutor(es) del Programa de Tutorías para el Aprendizaje y la Formación Integral (PTAFI 3.0), para el establecimiento educativo "+v[0]+" (código DANE "+v[1]+"), ubicado en "+mun+", "+dep+".");
+P((i==4?"Corresponde al seguimiento del proceso del Momento III":"Corresponde a la "+nom.replace(/^Fase (\d) · (.*)$/,"fase $1, «$2»,")+" del Momento III")+" (13 de octubre de 2026 – 15 de febrero de 2027), dedicado a la evaluación, sistematización y proyección de los aprendizajes y avances alcanzados.");
+P("Este documento presenta, con las propias palabras del establecimiento, lo registrado en esta fase"+(i<4?" (avance: "+pct(i)+"%)":"")+". No modifica el sentido de lo consignado por el equipo.");
+H("2. ¿QUÉ SE BUSCA EN ESTA FASE?");P(PUR[i]);
+H("3. "+(i==4?"INDICADORES Y SEGUIMIENTO":"LO REGISTRADO POR EL ESTABLECIMIENTO"));
+if(i==4){const x=ind();P("Experiencias ancla: "+x.e+"\nEvidencias registradas: "+x.ev+"\nHallazgos: "+x.h+"\nTransformaciones prioritarias: "+x.t+"\nDecisiones: mantener "+x.d.Mantener+", transformar "+x.d.Transformar+", cerrar "+x.d.Cerrar+"\nDimensiones señaladas: "+x.dm+" de 9\n"+[0,1,2,3].map(k=>"Avance Fase "+(k+1)+": "+pct(k)+"%").join("\n"))}
+const ks=Object.keys(META).filter(k=>META[k].ph==i&&vl(k)).sort((a,b)=>META[a].o-META[b].o);
+if(ks.length)ks.forEach(k=>{L(META[k].l);P(vl(k))});else P("Aún no se ha registrado información en esta fase.");
+H("4. CIERRE");P("Informe generado el "+hoy+" a partir de los registros del establecimiento. Las decisiones sobre las transformaciones corresponden al establecimiento educativo y a sus instancias de gobierno escolar.");
+foot();dl("PTAFI_Momento3_"+(i==4?"seguimiento":"fase"+(i+1))+".pdf",d.output("blob"));m.textContent="PDF generado. Si no se descarga, revise los permisos del navegador."}catch(x){m.textContent="No fue posible generar el PDF en esta vista."}}
+mk("fases","Desarrollo de fases","FASES DEL MOMENTO III","Cuatro fases, 15 estaciones breves, un solo hilo: lo que registra una vez se reutiliza en las demás.",
+`<div class="phb" id="phb"></div><div class="fields"><input id="fT" placeholder="Nombre del tutor o tutores"><input id="fE" placeholder="Establecimiento educativo"><input id="fD" placeholder="Código DANE"><input id="fDp" placeholder="Departamento"><input id="fMn" placeholder="Municipio"></div>
+<div class="tools"><select id="ft" onchange="fp(+this.value)" style="max-width:420px;font-weight:600">${["1. Apropiar: comprender para transformar","2. Evaluar: lectura colectiva del año","3. Sistematizar: de la experiencia al conocimiento compartible","4. Proyectar: visión compartida hacia 2027"].map((x,i)=>`<option value="${i}">${x}</option>`).join("")}</select><button class="b" onclick="xp(ACT)">EXPORTAR PDF DE ESTA FASE</button></div><p id="xm" class="q"></p>
+${[0,1,2,3].map(i=>`<div class="fpn" id="ph${i}" ${i?"hidden":""}></div>`).join("")}`);
+mk("seg","Seguimiento","Seguimiento del proceso","Un tablero vivo: qué se ha construido, qué falta y cómo avanzan las transformaciones después del Momento III.",'<div id="sg"></div>');
+document.addEventListener("input",e=>{const k=e.target.dataset&&e.target.dataset.f;if(k){ST[k]=e.target.value;if(k=="c_rel")ST.c_rele=1;pst()}});
+document.addEventListener("focusout",e=>{if(e.target.dataset&&e.target.dataset.f&&ACT<4&&$("fases")&&!$("fases").hidden){const p=document.querySelector("#ph"+ACT+" .bar i");if(p)p.style.width=pct(ACT)+"%"}});
+fp(0);
+
+const DEPS=["Amazonas","Antioquia","Arauca","Atlántico","Bogotá D.C.","Bolívar","Boyacá","Caldas","Caquetá","Casanare","Cauca","Cesar","Chocó","Córdoba","Cundinamarca","Guainía","Guaviare","Huila","La Guajira","Magdalena","Meta","Nariño","Norte de Santander","Putumayo","Quindío","Risaralda","San Andrés y Providencia","Santander","Sucre","Tolima","Valle del Cauca","Vaupés","Vichada"],
+MUN={"Atlántico":["Baranoa","Barranquilla","Campo de la Cruz","Candelaria","Galapa","Juan de Acosta","Luruaco","Malambo","Manatí","Palmar de Varela","Piojó","Polonuevo","Ponedera","Puerto Colombia","Repelón","Sabanagrande","Sabanalarga","Santa Lucía","Santo Tomás","Soledad","Suan","Tubará","Usiacurí"]};
+let ID=null;
+$("wd").innerHTML='<option value="">Seleccione el departamento</option>'+DEPS.map(x=>`<option>${x}</option>`).join("");
+function wdep(){const d=$("wd").value,m=$("wn"),L=MUN[d]||[];m.innerHTML='<option value="">Seleccione el municipio</option>'+L.map(x=>`<option>${x}</option>`).join("")+'<option value="__o">Otro municipio (escribir)</option>';$("wo").hidden=true;if(d&&!L.length){m.value="__o";$("wo").hidden=false}}
+function wmun(){$("wo").hidden=$("wn").value!="__o"}
+function enter(){const t=$("wt").value.trim(),e=$("we2").value.trim(),c=$("wc").value.trim(),d=$("wd").value,mm=$("wn").value=="__o"?$("wo").value.trim():$("wn").value,er=[];
+if(!t)er.push("el nombre del docente tutor");if(!e)er.push("el nombre de la institución educativa");if(!c)er.push("el código DANE");else if(!/^\d+$/.test(c))er.push("un código DANE con solo números");if(!d)er.push("el departamento");if(!mm)er.push("el municipio");
+if(er.length){$("wer").textContent="Falta o debe corregir: "+er.join("; ")+".";$("wer").hidden=false;return}
+$("wer").hidden=true;ID={t,e,c,d,m:mm};applyID()}
+function applyID(){$("bv").innerHTML="Bienvenido(a)<b>"+eh(ID.t)+"</b>";const V={fT:ID.t,fE:ID.e,fD:ID.c,fDp:ID.d,fMn:ID.m,f1:ID.e,f2:ID.t,f3:ID.m+", "+ID.d};Object.keys(V).forEach(k=>{const i=$(k);i.value=V[k];if(!/^f[123]$/.test(k)&&k[0]=="f")i.readOnly=true});
+const h=`<b>${eh(ID.e)}</b> · DANE ${eh(ID.c)} · ${eh(ID.m)}, ${eh(ID.d)} · Tutor(es): ${eh(ID.t)}`;$("idb").innerHTML=`<span>🎓 ${h}</span><span id="cst" class="q"></span><button class="b g" onclick="pst()">Guardar ahora</button><button class="b g" onclick="salir()">Cerrar sesión</button><button class="b g" onclick="chg()">Cambiar datos de identificación</button>`;$("phb").innerHTML="🏫 "+h;
+$("wl").hidden=true;$("app").hidden=false;save();pst();window.scrollTo(0,0)}
+function chg(){if(ID){$("wt").value=ID.t;$("we2").value=ID.e;$("wc").value=ID.c;$("wd").value=ID.d;wdep();if(MUN[ID.d]&&MUN[ID.d].includes(ID.m))$("wn").value=ID.m;else{$("wn").value="__o";$("wo").hidden=false;$("wo").value=ID.m}}$("wl").hidden=false;$("app").hidden=true;window.scrollTo(0,0)}
+
+function bk(){if(!ID)return;dl("PTAFI_respaldo_"+ID.c+".json",JSON.stringify({v:1,id:ID,st:ST,cr:state(),at:Date.now()}));cstat("Respaldo descargado. Guárdelo en un lugar seguro (correo, Drive o su equipo).")}
+function rst(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result);if(!o||typeof o.st!=="object"||!o.id)throw 0;ST=o.st;ID=o.id;if(o.cr)apply(o.cr);pst();chg();rend(ACT);$("wer").hidden=true;$("wrec").textContent="✔ Se cargó su respaldo. Verifique sus datos y pulse ENTRAR para continuar.";$("wrec").hidden=false}catch(x){$("wer").textContent="El archivo no es un respaldo válido de esta plataforma.";$("wer").hidden=false}};r.readAsText(f);e.target.value=""}
+
+(async()=>{try{const c=window.claude&&await claude.use("db"),u=await claude.use("user");if(!c||!u)return;const uid=await u.id();if(!uid)return;CDB=c.collection("data/users/"+uid).doc("m3full");const sn=await CDB.get();
+if(sn.exists&&$("app").hidden){const raw=typeof sn.data==="function"?sn.data():sn.data,o=JSON.parse(raw.json);if(o&&o.st&&Object.keys(o.st).length){ST=o.st;if(o.id){ID=o.id;chg()}rend(ACT);$("wrec").textContent="✔ Se recuperó su trabajo guardado"+(o.at?" el "+new Date(o.at).toLocaleString("es-CO"):"")+". Verifique sus datos y pulse ENTRAR para continuar.";$("wrec").hidden=false}}else if(!sn.exists&&Object.keys(ST).length)csave();
+cstat("Guardado automático en su cuenta activado.")}catch(e){}})();
+const REMOTE=true;
+const hex=b=>[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("");
+const b64=b=>{const u=new Uint8Array(b);let s="";for(let i=0;i<u.length;i+=8192)s+=String.fromCharCode.apply(null,u.subarray(i,i+8192));return btoa(s)};
+const ub=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+let RK=null;
+async function kdf(d,p){const e=new TextEncoder(),m=await crypto.subtle.importKey("raw",e.encode(d+"|"+p),"PBKDF2",false,["deriveBits"]),b=new Uint8Array(await crypto.subtle.deriveBits({name:"PBKDF2",salt:e.encode("ptafi3-momento3-v1"),iterations:200000,hash:"SHA-256"},m,512));return{id:hex(b.slice(0,32)),key:await crypto.subtle.importKey("raw",b.slice(32,64),"AES-GCM",false,["encrypt","decrypt"])}}
+async function enc(t){const iv=crypto.getRandomValues(new Uint8Array(12)),c=await crypto.subtle.encrypt({name:"AES-GCM",iv},RK.key,new TextEncoder().encode(t));return JSON.stringify({v:1,iv:b64(iv),ct:b64(c)})}
+async function dec(t){const o=JSON.parse(t),p=await crypto.subtle.decrypt({name:"AES-GCM",iv:ub(o.iv)},RK.key,ub(o.ct));return JSON.parse(new TextDecoder().decode(p))}
+async function getRec(){const r=await fetch("/api/m3?id="+RK.id,{cache:"no-store"});if(r.status==404)return null;if(!r.ok)throw new Error("srv");return await dec(await r.text())}
+async function keys(){const d=$("wc").value.trim(),p=$("wpin").value;if(!/^\d+$/.test(d)){wmsg("Escriba el código DANE (solo números).",1);return false}if(p.length<6){wmsg("El PIN debe tener al menos 6 caracteres.",1);return false}RK=await kdf(d,p);return true}
+function wmsg(t,bad){const e=$("wer");e.textContent=t;e.hidden=!t;const g=$("wrec");if(!bad&&t){g.textContent=t;g.hidden=false;e.hidden=true}else g.hidden=true}
+const same=(a,b)=>String(a||"").trim().toLowerCase()==String(b||"").trim().toLowerCase();
+const enter0=enter;
+let CURID=null,NEWREC=false;
+function wipe(){ST={};R=[];["f1","f2","f3"].forEach(k=>{const e=$(k);if(e)e.value=""});SS[0]=SS[1]=SS[2]=SS[3]=0;ACT=0;draw()}
+enter=async function(){try{if(!(await keys()))return;const r=await getRec();
+if(r&&r.id&&!same(r.id.t,$("wt").value)){wmsg("Ese DANE y PIN ya pertenecen a otro tutor ("+r.id.t+"). Elija un PIN distinto.",1);RK=null;return}
+if(RK.id!==CURID){NEWREC=!r;wipe();if(r){ST=r.st||{};apply(r.cr||{rows:[],f:[]})}CURID=RK.id}
+fp(0);enter0()}catch(e){wmsg("No hay conexión con el servidor de guardado. Revise su internet e intente de nuevo.",1)}};
+async function flush(){clearTimeout(CT);if(!RK||!ID)return;try{await fetch("/api/m3?id="+RK.id,{method:"PUT",body:await enc(JSON.stringify({st:ST,id:ID,cr:state(),at:Date.now()}))})}catch(e){}}
+async function salir(){await flush();wipe();RK=null;CURID=null;ID=null;["wt","we2","wc","wpin","wo"].forEach(k=>$(k).value="");$("wd").value="";wdep();["fT","fE","fD","fDp","fMn"].forEach(k=>{const e=$(k);e.value="";e.readOnly=false});$("wer").hidden=true;$("wrec").hidden=true;$("idb").innerHTML="";$("phb").innerHTML="";$("bv").innerHTML="";fp(0);$("wl").hidden=false;$("app").hidden=true;window.scrollTo(0,0)}
+async function recov(){try{if(!(await keys()))return;const r=await getRec();if(!r){wmsg("No se encontró trabajo guardado con ese DANE y PIN.",1);return}
+wipe();ST=r.st||{};ID=r.id;apply(r.cr||{rows:[],f:[]});CURID=RK.id;NEWREC=false;chg();rend(ACT);wmsg("✔ Se recuperó su trabajo guardado. Verifique sus datos y pulse ENTRAR.")}catch(e){wmsg("No fue posible recuperar: revise su DANE, su PIN y su conexión.",1)}}
+csave=function(){clearTimeout(CT);CT=setTimeout(async()=>{if(!RK){cstat("Guardado solo en este navegador.");return}try{const t=await enc(JSON.stringify({st:ST,id:ID,cr:state(),at:Date.now()})),r=await fetch("/api/m3?id="+RK.id,{method:"PUT",body:t});if(!r.ok)throw 0;if(NEWREC){NEWREC=false;cnt("docente")}cstat("💾 Guardado en el servidor (cifrado) ✓ "+new Date().toLocaleTimeString("es-CO",{hour:"2-digit",minute:"2-digit"}))}catch(e){cstat("No se pudo guardar en el servidor; intente de nuevo.")}},2500)};
+const _sv0=save;save=function(){_sv0();if(RK)csave()};
+function cnt(e){try{return fetch("/api/visitas?e="+e,{method:"POST",keepalive:true}).catch(()=>{})}catch(x){}}
+let VISN=null;
+async function loadCount(){try{const r=await fetch("/api/visitas?public=1",{cache:"no-store"});if(!r.ok)return;const d=await r.json(),e=$("vis");if(e)e.innerHTML="👁 "+(VISN!=null?"Eres el visitante N.º <b>"+VISN+"</b>":"<b>"+d.visita+"</b> visitas")+"<small>👩‍🏫 "+d.docente+" docentes participantes · 📄 "+d.pdf+" informes PDF</small>"}catch(x){}}
+async function visita(){try{let n=null;try{n=sessionStorage.getItem("m3vn")}catch(x){}if(n)VISN=+n;else{const r=await cnt("visita");if(r&&r.ok){const j=await r.json();VISN=j.n;try{sessionStorage.setItem("m3vn",VISN)}catch(x){}}}}catch(x){}loadCount()}
+visita();
+const _ap=applyID;applyID=function(){_ap();Promise.resolve(cnt("ingreso")).then(loadCount)};
+const _dl=dl;dl=async function(n,d){const r=await _dl(n,d);if(/\.pdf$/i.test(n))Promise.resolve(cnt("pdf")).then(loadCount);return r};
+
+
+
+S.push({id:"fases",n:"Desarrollo de fases"});S.push({id:"seg",n:"Seguimiento"});
+const FA=["Apropiar","Evaluar","Sistematizar","Proyectar"],ES=["Pendiente","En proceso","Realizado"];
+function esc(v){return String(v||"").replace(/"/g,"&quot;").replace(/</g,"&lt;")}
+function row(r,i){const o=(a,v)=>a.map(x=>`<option ${x==v?"selected":""}>${x}</option>`).join("");
+return `<tr><td>${i+1}</td><td><span class="pv">${esc(r.a)}</span><textarea class="ed" rows="2" data-k="a">${esc(r.a)}</textarea></td>
+<td><span class="pv">${r.f}</span><select class="ed" data-k="f">${o(FA,r.f)}</select></td>
+<td><span class="pv">${esc(r.r)}</span><input class="ed" data-k="r" value="${esc(r.r)}"></td>
+<td><span class="pv">${esc(r.d1)}</span><input class="ed" type="date" data-k="d1" value="${esc(r.d1)}"></td>
+<td><span class="pv">${esc(r.d2)}</span><input class="ed" type="date" data-k="d2" value="${esc(r.d2)}"></td>
+<td><span class="pv">${r.s}</span><select class="ed" data-k="s">${o(ES,r.s)}</select></td>
+<td><span class="pv">${esc(r.o)}</span><textarea class="ed" rows="2" data-k="o">${esc(r.o)}</textarea></td>
+<td class="noprint"><button class="b g" onclick="del(${i})">✕</button></td></tr>`}
+let R=[],DB=null,T=null;
+function msg(t){const m=document.getElementById("msg");if(m)m.textContent=t}
+function state(){return{rows:R,f:["f1","f2","f3"].map(k=>document.getElementById(k).value)}}
+function apply(d){R=d.rows||[];(d.f||[]).forEach((v,i)=>document.getElementById("f"+(i+1)).value=v||"");draw()}
+
+(async()=>{try{const c=window.claude&&await claude.use("db"),u=await claude.use("user");if(!c||!u)return;const id=await u.id();if(!id)return;
+DB=c.collection("data/users/"+id).doc("momento3");const sn=await DB.get();if(sn.exists){const d=typeof sn.data==="function"?sn.data():sn.data;if(d&&d.json)apply(JSON.parse(d.json))}msg("Guardado automático activado en su cuenta.")}catch(e){}})();
+function draw(){document.getElementById("tb").innerHTML=R.map(row).join("")||'<tr><td colspan="9">Sin actividades. Agregue una o cargue la plantilla.</td></tr>'}
+function save(){clearTimeout(T);T=setTimeout(async()=>{const j=JSON.stringify(state());
+if(DB){try{await DB.set({json:j});msg("Guardado ✓")}catch(e){msg("No se pudo guardar automáticamente.")}}},600)}
+async function dl(name,data){try{const d=await claude.use("downloads");if(!d)throw 0;await d.save({filename:name,data});msg("Archivo listo ✓")}catch(e){if(e&&e.code=="declined")return;
+try{const a=document.createElement("a");a.href=URL.createObjectURL(data instanceof Blob?data:new Blob([data]));a.download=name;a.click()}catch(x){msg("No fue posible descargar en esta vista.")}}}
+function bak(){dl("cronograma_momento3.json",JSON.stringify(state()))}
+function csv(){const q=v=>'"'+String(v||"").replace(/"/g,'""')+'"';dl("cronograma_momento3.csv","\ufeff"+["#,Actividad,Fase,Responsable,Inicio,Fin,Estado,Observaciones"].concat(R.map((r,i)=>[i+1,q(r.a),r.f,q(r.r),r.d1,r.d2,r.s,q(r.o)].join(","))).join("\n"))}
+if(0)document.body.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{apply(JSON.parse(r.result));save()}catch(x){msg("Archivo no válido.")}};r.readAsText(f)};
+function addRow(r){R.push(r||{a:"",f:"Apropiar",r:"",d1:"",d2:"",s:"Pendiente",o:""});draw();save()}
+function del(i){R.splice(i,1);draw();save()}
+function clr(){if(confirm("¿Borrar todo el cronograma?")){R=[];draw();save()}}
+function preload(){const p=[["Taller de apropiación de Lineamientos con docentes","Apropiar","Tutor/a y docentes"],["Círculos de conversación con estudiantes","Evaluar","Tutor/a"],["Encuentro con familias","Evaluar","Tutor/a y directivos"],["Escritura de narrativas pedagógicas y sistematización (PFIEE)","Sistematizar","Docentes"],["Muestra integradora de cierre","Sistematizar","Estudiantes, tutor/a, practicantes"],["Mesas de uso pedagógico de resultados (semanas de desarrollo institucional)","Proyectar","Equipos docentes"],["Formalización de acuerdos en PEI, SIEE y plan de estudios","Proyectar","Directivos"],["Narrativa de práctica reflexiva del tutor/a","Sistematizar","Tutor/a"]];
+p.forEach(x=>R.push({a:x[0],f:x[1],r:x[2],d1:"",d2:"",s:"Pendiente",o:""}));draw();save()}
+function jl(d,s,x,y,w){const ws=s.trim().split(/\s+/);if(ws.length<2){d.text(s,x,y);return}const tw=ws.reduce((a,k)=>a+d.getTextWidth(k),0),g=(w-tw)/(ws.length-1);let cx=x;ws.forEach(k=>{d.text(k,cx,y);cx+=d.getTextWidth(k)+g})}
+function pdf(){const EE=($("fE").value||"").trim(),DN=($("fD").value||"").trim(),TU=($("fT").value||"").trim(),MN=($("fMn").value||"").trim(),DP=($("fDp").value||"").trim();
+if(!EE||!DN||!TU){msg("Para exportar el PDF debe haber ingresado la institución, el código DANE y el tutor.");return}
+try{const d=new window.jspdf.jsPDF({orientation:"landscape",unit:"mm",format:"letter"}),W=279,fm=v=>v?v.split("-").reverse().join("/"):"—",hoy=new Date().toLocaleDateString("es-CO",{day:"numeric",month:"long",year:"numeric"}),nz=d.splitTextToSize(cl(EE.toUpperCase()),250).slice(0,2),o=nz.length>1?7:0,H=31+o;
+const bn=()=>{d.setFillColor(174,56,54);d.rect(0,0,W,H,"F");d.setTextColor(255,255,255);d.setFont("helvetica","bold");d.setFontSize(16);d.text(nz,W/2,10.5,{align:"center"});d.setFontSize(10.5);d.text("CRONOGRAMA · MOMENTO III 2026 · PTAFI 3.0",W/2,18+o,{align:"center"});d.setFont("helvetica","normal");d.setFontSize(8.5);d.text(cl("Código DANE: "+DN+"  ·  "+MN+", "+DP),W/2,23.5+o,{align:"center"});d.text(cl("Tutor(es): "+TU).slice(0,150),W/2,28+o,{align:"center"})};
+let y=H+10;const tx=(t,sz,b,col,gap,j)=>{if(y>196){d.addPage();bn();y=H+10}d.setFont("helvetica",b?"bold":"normal");d.setFontSize(sz);d.setTextColor(col[0],col[1],col[2]);const a=d.splitTextToSize(cl(t),255);a.forEach((s,k)=>{if(j&&k<a.length-1)jl(d,s,12,y,255);else d.text(s,12,y);y+=sz*.42+1.4});y+=gap||0};
+const rs=R.filter(r=>(r.a||"").trim()),cf=FA.map(f=>rs.filter(r=>r.f==f).length),ce=ES.map(e=>rs.filter(r=>r.s==e).length),ds=rs.map(r=>r.d1).filter(Boolean).sort(),de=rs.map(r=>r.d2).filter(Boolean).sort();
+bn();tx("INTRODUCCIÓN",12,1,[174,56,54],1);
+tx("El presente cronograma fue elaborado por "+TU+", docente(s) tutor(es) del Programa de Tutorías para el Aprendizaje y la Formación Integral (PTAFI 3.0), para el establecimiento educativo "+EE+" (código DANE "+DN+"), ubicado en "+MN+", "+DP+". Organiza en el tiempo las acciones que el establecimiento prevé desarrollar durante el Momento III de 2026, dedicado a la evaluación, sistematización y proyección de los aprendizajes y avances alcanzados, que se extiende del 13 de octubre de 2026 al 15 de febrero de 2027.",10,0,[30,30,30],2.5,1);
+tx("El Momento III se organiza en cuatro fases articuladas: Apropiar (comprender para transformar), Evaluar (lectura colectiva del año), Sistematizar (de la experiencia al conocimiento pedagógico compartible) y Proyectar (construir una visión compartida sobre las transformaciones que se requieren). Cada actividad de este cronograma se asocia a una de esas fases, de modo que el documento permite ver cómo se distribuye el trabajo del establecimiento a lo largo del periodo.",10,0,[30,30,30],2.5,1);
+tx("Cómo leer este documento: la tabla de las páginas siguientes presenta, para cada actividad, la fase a la que corresponde, la persona o equipo responsable, las fechas de inicio y fin, su estado y las observaciones registradas por el establecimiento. Los datos reproducen lo consignado por el equipo; las fechas y los responsables los define el establecimiento educativo, y este cronograma es un instrumento de planeación y seguimiento que puede actualizarse.",10,0,[30,30,30],4,1);
+tx("RESUMEN DEL CRONOGRAMA",12,1,[174,56,54],1);
+if(rs.length){const tot=["TOTAL",rs.length,...ES.map(e=>rs.filter(r=>r.s==e).length)];
+d.autoTable({startY:y,margin:{left:12,right:12,top:H+12,bottom:16},theme:"grid",head:[["Fase","Actividades",...ES]],body:FA.map(f=>[f,rs.filter(r=>r.f==f).length,...ES.map(e=>rs.filter(r=>r.f==f&&r.s==e).length)]).concat([tot]),styles:{fontSize:9,cellPadding:1.8,halign:"center",lineColor:[200,200,200],lineWidth:.2},headStyles:{fillColor:[174,56,54],textColor:255},columnStyles:{0:{halign:"left",cellWidth:70}},didParseCell:h=>{if(h.section==="body"&&h.row.index===FA.length){h.cell.styles.fontStyle="bold";h.cell.styles.fillColor=[246,232,230]}},didDrawPage:()=>bn()});y=d.lastAutoTable.finalY+5;
+tx("Primera fecha de inicio registrada: "+(ds.length?fm(ds[0]):"—")+"   ·   Última fecha de finalización registrada: "+(de.length?fm(de[de.length-1]):"—"),9.5,0,[30,30,30],1)}else tx("Aún no se han registrado actividades en el cronograma.",10,0,[30,30,30],0);
+tx("Documento generado el "+hoy+".",9,0,[110,110,110],0);
+if(rs.length){d.addPage();d.setTextColor(174,56,54);d.setFont("helvetica","bold");d.setFontSize(12);d.text("DETALLE DE ACTIVIDADES",12,H+8);
+d.autoTable({startY:H+12,margin:{top:H+12,left:12,right:12,bottom:16},head:[["#","Actividad","Fase","Responsable","Inicio","Fin","Estado","Observaciones"]],body:rs.map((r,i)=>[i+1,cl(r.a),r.f,cl(r.r||""),fm(r.d1),fm(r.d2),r.s,cl(r.o||"")]),styles:{fontSize:8.5,cellPadding:2,overflow:"linebreak",valign:"top"},headStyles:{fillColor:[174,56,54],textColor:255},columnStyles:{0:{cellWidth:7},1:{cellWidth:66},2:{cellWidth:24},3:{cellWidth:36},4:{cellWidth:20},5:{cellWidth:20},6:{cellWidth:22},7:{cellWidth:58}},didDrawPage:()=>bn()})}
+const N=d.getNumberOfPages();for(let i=1;i<=N;i++){d.setPage(i);d.setFont("helvetica","normal");d.setFontSize(8);d.setTextColor(110,110,110);d.text("Pág. "+i+" de "+N+"  ·  Instrumento elaborado por Leonardo Orozco, tutor del Atlántico",12,210)}
+dl("PTAFI_Cronograma_Momento3.pdf",d.output("blob"));msg("PDF generado. Si no se descarga, revise los permisos del navegador.")}catch(x){msg("No fue posible generar el PDF en esta vista.")}}
+document.addEventListener("input",e=>{const k=e.target.dataset&&e.target.dataset.k;if(k){const i=e.target.closest("tr").rowIndex-1;R[i][k]=e.target.value;save()}else if(/^f[123]$/.test(e.target.id))save()});
+function show(id){if(id=="seg")seg();{const bb=document.querySelector('nav button[data-id="'+id+'"]'),gc=bb&&bb.closest(".gsub");if(gc&&gc.hidden){gc.hidden=false;gc.h.textContent="▾ "+gc.t}}document.querySelectorAll(".sec").forEach(s=>s.hidden=s.id!=id);document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.id==id));document.getElementById("nav").classList.remove("open");scrollTo(0,0)}
+let GC=null;S.forEach((s,i)=>{if(i==0||s.id=="fases"){const t=i==0?"SESIÓN 1 · MOMENTO III-2026":"SESIÓN 2 · DESARROLLO DE LAS FASES",h=document.createElement("button"),c=document.createElement("div");c.className="gsub";c.hidden=i!=0;c.h=h;c.t=t;h.className="ng";h.textContent=(c.hidden?"▸ ":"▾ ")+t;h.onclick=()=>{c.hidden=!c.hidden;h.textContent=(c.hidden?"▸ ":"▾ ")+t};nav.appendChild(h);nav.appendChild(c);GC=c}const b=document.createElement("button");b.textContent=s.n;b.dataset.id=s.id;b.onclick=()=>show(s.id);GC.appendChild(b)});{const bv=document.createElement("div");bv.id="bv";bv.className="bv";nav.insertBefore(bv,nav.firstChild);const vs=document.createElement("div");vs.id="vis";vs.className="vis";nav.appendChild(vs)}
+draw();show("cuando");
+</script></body></html>
